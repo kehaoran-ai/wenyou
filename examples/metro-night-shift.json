@@ -8,7 +8,7 @@
   "ui": {
     "drawerTitle": "值班记录",
     "interactLabel": "决策",
-    "inputPlaceholder": "输入你的核查动作、消息回复或下一步安排… (Enter 发送)",
+    "inputPlaceholder": "输入核查动作或下一步安排…",
     "retryLabel": "重来",
     "deleteLabel": "删掉本回合",
     "autoSettleLabel": "同步工单",

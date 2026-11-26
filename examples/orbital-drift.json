@@ -8,7 +8,7 @@
   "ui": {
     "drawerTitle": "舰载遥测",
     "interactLabel": "终端指令",
-    "inputPlaceholder": "输入操作指令或舱内行动… (Enter 发送)",
+    "inputPlaceholder": "输入终端指令或舱内行动…",
     "retryLabel": "回溯指令",
     "deleteLabel": "撤销回合",
     "autoSettleLabel": "遥测同步",

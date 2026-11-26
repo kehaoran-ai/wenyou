@@ -43,6 +43,14 @@ Wenyou 把**引擎底座**和**故事蓝图**彻底拆开：
 | ![霞飞路雾夜档案 — 旧档案](docs/screenshots/dossier.png)<br>**[`minguo-dossier.html`](examples/minguo-dossier.html)**（`dossier`）：民国探案《霞飞路雾夜档案》· 身心与卷号 / 证物袋 / 嫌疑人 / 时间线 / *密档* | ![灰塔议席 — 暗夜书房](docs/screenshots/council.png)<br>**[`grey-tower-council.html`](examples/grey-tower-council.html)**（`parchment-night`）：古典权谋《灰塔议席》· 议席 / 派系 / 密报 / 契约 / *禁书库* |
 | ![凌晨两点的风控室 — 现代出版物](docs/screenshots/metro.png)<br>**[`metro-night-shift.html`](examples/metro-night-shift.html)**（`editorial`）：现代金融悬疑《凌晨两点的风控室》· 风控态势 / 留痕凭证 / 人物关系 / 审计时间线 / *离岸穿透* | **所有隐藏页签均在剧情中动态解锁。** 双击任意案例点选首回合选项，即可离线体验流式叙事、自动结算、动态新页签与精确状态回滚。 |
 
+## 手机端深度适配（375px 实测）
+
+针对竖屏单手游玩专项打磨：顶部自动收紧为图标工具栏，动态页签收进滑出抽屉，支持一键收起选项和全屏沉浸模式，适配 `safe-area-inset-bottom` 安全区，零横向溢出。
+
+| 竖屏阅读与抉择（水墨笺纸） | 滑出动态页签抽屉（冷光终端） | 全屏沉浸阅读（暗夜书房） |
+|---|---|---|
+| <img src="docs/screenshots/mobile-reading.png" width="240" alt="手机端竖屏阅读与抉择" /> | <img src="docs/screenshots/mobile-drawer.png" width="240" alt="手机端滑出动态页签抽屉" /> | <img src="docs/screenshots/mobile-immersive.png" width="240" alt="手机端全屏沉浸阅读" /> |
+
 ## 一个文游是怎么做出来的
 
 1. **用大白话说题材。** 「给我做一个 1933 年上海法租界雾夜探案文游，要带证物袋和嫌疑人口供对比。」

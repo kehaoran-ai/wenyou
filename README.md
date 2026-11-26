@@ -43,6 +43,14 @@ Every example in `examples/` is a standalone HTML file compiled from its matchin
 | ![霞飞路雾夜档案 — dossier](docs/screenshots/dossier.png)<br>**[`minguo-dossier.html`](examples/minguo-dossier.html)** (`dossier`): 民国探案 · 身心与卷号 / 证物袋 / 嫌疑人 / 时间线 / *密档* | ![灰塔议席 — parchment-night](docs/screenshots/council.png)<br>**[`grey-tower-council.html`](examples/grey-tower-council.html)** (`parchment-night`): 古典权谋 · 议席 / 派系 / 密报 / 契约 / *禁书库* |
 | ![凌晨两点的风控室 — editorial](docs/screenshots/metro.png)<br>**[`metro-night-shift.html`](examples/metro-night-shift.html)** (`editorial`): 现代金融悬疑 · 风控态势 / 留痕凭证 / 人物关系 / 审计时间线 / *离岸穿透* | **Every hidden tab unlocks mid-story.** Pick any opening choice in offline demo mode to see live streaming, state settlement, dynamic tab unlocking and exact rollback. |
 
+## Built for phones too (verified at 375px)
+
+Every generated HTML adapts natively to vertical phone screens: compact icon header, slide-over dynamic tab drawer, collapsible choices, fullscreen immersive mode, `safe-area-inset-bottom` padding and zero horizontal overflow.
+
+| Reading & choices (`ink-scroll`) | Slide-over dynamic drawer (`terminal`) | Fullscreen immersive (`parchment-night`) |
+|---|---|---|
+| <img src="docs/screenshots/mobile-reading.png" width="240" alt="Mobile reading and choices" /> | <img src="docs/screenshots/mobile-drawer.png" width="240" alt="Mobile slide-over dynamic tab drawer" /> | <img src="docs/screenshots/mobile-immersive.png" width="240" alt="Mobile fullscreen immersive reading" /> |
+
 ## How a game gets built
 
 1. **You describe the world.** "Build me an interactive 1933 Shanghai foggy-night murder mystery with evidence bags and suspect timelines."

@@ -8,7 +8,7 @@
   "ui": {
     "drawerTitle": "议席秘录",
     "interactLabel": "举措",
-    "inputPlaceholder": "写下你的发言、密令或私下交易… (Enter 发送)",
+    "inputPlaceholder": "写下你的发言、密令或交易…",
     "retryLabel": "重拟",
     "deleteLabel": "撤回回合",
     "autoSettleLabel": "同步政局",

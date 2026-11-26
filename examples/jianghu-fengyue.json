@@ -8,7 +8,7 @@
   "ui": {
     "drawerTitle": "随身卷宗",
     "interactLabel": "抉择",
-    "inputPlaceholder": "写下你的应对… (Enter 发送)",
+    "inputPlaceholder": "写下你的应对…",
     "retryLabel": "重来",
     "deleteLabel": "删掉本回合",
     "autoSettleLabel": "自动结算",

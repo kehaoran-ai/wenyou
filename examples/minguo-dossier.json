@@ -8,7 +8,7 @@
   "ui": {
     "drawerTitle": "案卷目录",
     "interactLabel": "调查行动",
-    "inputPlaceholder": "写下你的勘验、盘问或推理动作… (Enter 发送)",
+    "inputPlaceholder": "写下勘验、盘问或推理动作…",
     "retryLabel": "重演",
     "deleteLabel": "撤回回合",
     "autoSettleLabel": "同步案卷",
