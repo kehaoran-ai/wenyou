@@ -1,0 +1,31 @@
+/* Theme: parchment-night (暗夜书房 — 西幻 / 权谋 / 哥特 / 史诗) */
+:root {
+  --wy-bg: #121110;
+  --wy-surface: #1A1816;
+  --wy-surface-2: #221F1C;
+  --wy-surface-hover: #2B2723;
+  --wy-border: #2F2A25;
+  --wy-border-strong: #4A4239;
+  --wy-text: #EAE4D9;
+  --wy-text-secondary: #B4AA9B;
+  --wy-text-muted: #807668;
+  --wy-ink: #EAE4D9;
+  --wy-ink-text: #121110;
+  --wy-accent: #C29552;
+  --wy-accent-soft: rgba(194, 149, 82, 0.12);
+  --wy-accent-border: rgba(194, 149, 82, 0.34);
+  --wy-danger: #E05252;
+  --wy-danger-soft: rgba(224, 82, 82, 0.12);
+  --wy-shadow: 0 1px 2px rgba(0, 0, 0, 0.30);
+  --wy-shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.55);
+  --wy-radius-sm: 4px;
+  --wy-radius-md: 6px;
+  --wy-radius-lg: 8px;
+  --wy-font-ui: -apple-system, BlinkMacSystemFont, "PingFang SC", "Noto Sans SC", "Inter", sans-serif;
+  --wy-font-prose: "Songti SC", "STSong", "Noto Serif SC", Georgia, serif;
+  --wy-font-mono: ui-monospace, "SF Mono", "Sarasa Term SC", monospace;
+  --wy-prose-size: 17px;
+  --wy-prose-leading: 1.94;
+  --wy-paper-pattern: radial-gradient(rgba(234, 228, 217, 0.025) 1px, transparent 0);
+  --wy-paper-size: 28px 28px;
+}

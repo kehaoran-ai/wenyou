@@ -1,0 +1,2842 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>孤舟七号：近轨失联</title>
+  <style id="wy-theme-style">/* Theme: terminal (冷光终端 — 硬科幻 / 赛博 / 废土生存 / 太空失联) */
+:root {
+  --wy-bg: #0B0D10;
+  --wy-surface: #12161B;
+  --wy-surface-2: #181D24;
+  --wy-surface-hover: #1E252F;
+  --wy-border: #252D38;
+  --wy-border-strong: #3B4758;
+  --wy-text: #E6ECF2;
+  --wy-text-secondary: #A1AEBD;
+  --wy-text-muted: #6E7D90;
+  --wy-ink: #E6ECF2;
+  --wy-ink-text: #0B0D10;
+  --wy-accent: #D99B26;
+  --wy-accent-soft: rgba(217, 155, 38, 0.12);
+  --wy-accent-border: rgba(217, 155, 38, 0.36);
+  --wy-danger: #EF4444;
+  --wy-danger-soft: rgba(239, 68, 68, 0.12);
+  --wy-shadow: 0 1px 2px rgba(0, 0, 0, 0.28);
+  --wy-shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.52);
+  --wy-radius-sm: 4px;
+  --wy-radius-md: 6px;
+  --wy-radius-lg: 8px;
+  --wy-font-ui: -apple-system, BlinkMacSystemFont, "PingFang SC", "Noto Sans SC", "Inter", sans-serif;
+  --wy-font-prose: -apple-system, BlinkMacSystemFont, "PingFang SC", "Noto Sans SC", "Inter", sans-serif;
+  --wy-font-mono: ui-monospace, "SF Mono", "Sarasa Term SC", "Menlo", monospace;
+  --wy-prose-size: 16px;
+  --wy-prose-leading: 1.85;
+  --wy-paper-pattern: linear-gradient(to right, rgba(230, 236, 242, 0.024) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(230, 236, 242, 0.024) 1px, transparent 1px);
+  --wy-paper-size: 32px 32px;
+}
+
+.wy-header-scene,
+.wy-turn-badge,
+.wy-tab-btn,
+.wy-meter-val,
+.wy-stat-val {
+  font-family: var(--wy-font-mono);
+}</style>
+  <style id="wy-custom-style"></style>
+  <style>/* Wenyou Core Engine CSS — restrained, responsive, zero AI-slop */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: var(--wy-bg);
+  color: var(--wy-text);
+  font-family: var(--wy-font-ui);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  height: 100dvh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* Header */
+.wy-header {
+  height: 52px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 14px;
+  background: var(--wy-surface);
+  border-bottom: 1px solid var(--wy-border);
+  z-index: 20;
+}
+
+.wy-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+}
+
+.wy-title-group {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.wy-story-title {
+  margin: 0;
+  font-family: var(--wy-font-ui);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--wy-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.wy-header-scene {
+  font-size: 12px;
+  line-height: 1.25;
+  color: var(--wy-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.wy-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+/* Buttons */
+.wy-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 11px;
+  border-radius: var(--wy-radius-sm);
+  border: 1px solid var(--wy-border);
+  background: var(--wy-surface);
+  color: var(--wy-text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
+}
+
+.wy-btn:hover:not(:disabled) {
+  background: var(--wy-surface-hover);
+  border-color: var(--wy-border-strong);
+  color: var(--wy-text);
+}
+
+.wy-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.wy-btn--icon {
+  width: 32px;
+  padding: 0;
+}
+
+.wy-btn--primary {
+  background: var(--wy-ink);
+  border-color: var(--wy-ink);
+  color: var(--wy-ink-text);
+}
+
+.wy-btn--primary:hover:not(:disabled) {
+  opacity: 0.88;
+  background: var(--wy-ink);
+  border-color: var(--wy-ink);
+  color: var(--wy-ink-text);
+}
+
+.wy-btn--danger:hover:not(:disabled) {
+  border-color: var(--wy-danger);
+  color: var(--wy-danger);
+  background: var(--wy-danger-soft);
+}
+
+.wy-btn--ghost {
+  border-color: transparent;
+  background: transparent;
+}
+
+.wy-btn svg {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+}
+
+/* Workspace */
+.wy-workspace {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  position: relative;
+}
+
+/* Sidebar */
+.wy-sidebar {
+  width: 316px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--wy-surface);
+  border-right: 1px solid var(--wy-border);
+  transition: margin-left 180ms ease, transform 180ms ease;
+  z-index: 30;
+}
+
+body.sidebar-collapsed .wy-sidebar {
+  margin-left: -316px;
+}
+
+.wy-sidebar-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px 6px;
+}
+
+.wy-sidebar-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--wy-text-muted);
+  letter-spacing: 0.04em;
+}
+
+.wy-tab-bar {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 0 8px;
+  border-bottom: 1px solid var(--wy-border);
+  overflow-x: auto;
+  scrollbar-width: none;
+  flex-shrink: 0;
+}
+
+.wy-tab-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.wy-tab-btn {
+  position: relative;
+  border: none;
+  background: transparent;
+  padding: 8px 8px 9px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--wy-text-muted);
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: color 120ms ease, border-color 120ms ease;
+}
+
+.wy-tab-btn:hover {
+  color: var(--wy-text);
+}
+
+.wy-tab-btn.is-active {
+  color: var(--wy-text);
+  font-weight: 600;
+  border-bottom-color: var(--wy-accent);
+}
+
+.wy-tab-btn.is-fresh {
+  color: var(--wy-accent);
+}
+
+.wy-tab-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 14px 12px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.wy-sidebar-foot {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 12px;
+  border-top: 1px solid var(--wy-border);
+  background: var(--wy-surface-2);
+  font-size: 12px;
+}
+
+.wy-foot-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.wy-mini-btn {
+  height: 24px;
+  padding: 0 7px;
+  border: 1px solid var(--wy-border);
+  border-radius: var(--wy-radius-sm);
+  background: var(--wy-surface);
+  color: var(--wy-text-secondary);
+  font-size: 12px;
+}
+
+.wy-mini-btn:hover {
+  border-color: var(--wy-border-strong);
+  color: var(--wy-text);
+}
+
+.wy-mode-pill {
+  height: 24px;
+  padding: 0 8px;
+  border: 1px solid var(--wy-border);
+  border-radius: var(--wy-radius-sm);
+  background: var(--wy-surface);
+  color: var(--wy-text-secondary);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.wy-mode-pill.is-live {
+  border-color: var(--wy-accent-border);
+  color: var(--wy-accent);
+  background: var(--wy-accent-soft);
+}
+
+/* Dynamic Widgets inside Sidebar */
+.wy-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.wy-section-title {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--wy-text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Meters */
+.wy-meter-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.wy-meter-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.wy-meter-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--wy-text);
+}
+
+.wy-meter-val {
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  color: var(--wy-text-secondary);
+}
+
+.wy-meter-track {
+  height: 5px;
+  border-radius: 99px;
+  background: var(--wy-surface-2);
+  overflow: hidden;
+}
+
+.wy-meter-fill {
+  height: 100%;
+  border-radius: 99px;
+  background: var(--wy-accent);
+  transition: width 260ms ease;
+}
+
+.wy-meter-fill.is-danger {
+  background: var(--wy-danger);
+}
+
+/* Stats Grid */
+.wy-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.wy-stat-cell {
+  padding: 8px 10px;
+  border: 1px solid var(--wy-border);
+  border-radius: var(--wy-radius-sm);
+  background: var(--wy-surface-2);
+  min-width: 0;
+}
+
+.wy-stat-label {
+  font-size: 11px;
+  color: var(--wy-text-muted);
+  margin-bottom: 2px;
+}
+
+.wy-stat-val {
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--wy-text);
+  word-break: break-word;
+}
+
+/* Tags / Inventory */
+.wy-tag-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.wy-tag-card {
+  padding: 8px 10px;
+  border: 1px solid var(--wy-border);
+  border-radius: var(--wy-radius-sm);
+  background: var(--wy-surface);
+  transition: border-color 120ms ease;
+}
+
+.wy-tag-card:hover {
+  border-color: var(--wy-border-strong);
+}
+
+.wy-tag-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.wy-tag-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--wy-text);
+}
+
+.wy-tag-qty {
+  font-family: var(--wy-font-mono);
+  font-size: 11px;
+  color: var(--wy-text-muted);
+  padding: 1px 5px;
+  border-radius: var(--wy-radius-sm);
+  background: var(--wy-surface-2);
+}
+
+.wy-tag-meta {
+  margin-top: 4px;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--wy-text-secondary);
+}
+
+/* Entities (Characters / Factions / Suspects) */
+.wy-entity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.wy-entity-card {
+  padding: 9px 10px;
+  border: 1px solid var(--wy-border);
+  border-radius: var(--wy-radius-sm);
+  background: var(--wy-surface);
+}
+
+.wy-entity-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.wy-entity-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--wy-text);
+}
+
+.wy-entity-status {
+  font-size: 11px;
+  padding: 1px 6px;
+  border: 1px solid var(--wy-border);
+  border-radius: var(--wy-radius-sm);
+  color: var(--wy-text-secondary);
+  background: var(--wy-surface-2);
+  white-space: nowrap;
+}
+
+.wy-entity-role {
+  font-size: 12px;
+  color: var(--wy-text-muted);
+  margin-top: 1px;
+}
+
+.wy-entity-note {
+  margin-top: 6px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--wy-text-secondary);
+}
+
+/* Timeline / Clues / Logs */
+.wy-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-left: 10px;
+  border-left: 1px solid var(--wy-border);
+}
+
+.wy-log-item {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.wy-log-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.wy-log-tag {
+  font-size: 11px;
+  color: var(--wy-text-muted);
+}
+
+.wy-log-status {
+  font-size: 11px;
+  color: var(--wy-accent);
+  font-weight: 500;
+}
+
+.wy-log-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--wy-text);
+}
+
+.wy-log-detail {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--wy-text-secondary);
+}
+
+/* Notes */
+.wy-note-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.wy-note-card {
+  padding: 10px 11px;
+  border: 1px solid var(--wy-border);
+  border-radius: var(--wy-radius-sm);
+  background: var(--wy-surface-2);
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--wy-text-secondary);
+}
+
+.wy-note-title {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--wy-text);
+  margin-bottom: 4px;
+}
+
+.wy-empty {
+  font-size: 12px;
+  color: var(--wy-text-muted);
+  padding: 6px 0;
+}
+
+/* Main Reading Area */
+.wy-main {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--wy-bg);
+  background-image: var(--wy-paper-pattern);
+  background-size: var(--wy-paper-size);
+  position: relative;
+}
+
+.wy-stream {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 28px 20px 28px;
+  scroll-behavior: smooth;
+}
+
+.wy-stream-inner {
+  max-width: 680px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.wy-opening-banner {
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--wy-border);
+}
+
+.wy-opening-kicker {
+  font-family: var(--wy-font-mono);
+  font-size: 12px;
+  color: var(--wy-text-muted);
+  margin-bottom: 4px;
+}
+
+.wy-opening-title {
+  margin: 0 0 6px;
+  font-family: var(--wy-font-ui);
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--wy-text);
+}
+
+.wy-opening-sub {
+  margin: 0;
+  font-size: 13.5px;
+  color: var(--wy-text-secondary);
+  line-height: 1.6;
+}
+
+/* Turn */
+.wy-turn {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.wy-turn.is-new {
+  animation: wyFadeIn 180ms ease;
+}
+
+@keyframes wyFadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.wy-player-row {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.wy-player-bubble {
+  max-width: 85%;
+  padding: 9px 13px;
+  border: 1px solid var(--wy-border);
+  border-radius: var(--wy-radius-md);
+  background: var(--wy-surface);
+  color: var(--wy-text);
+  font-size: 14px;
+  line-height: 1.6;
+  box-shadow: var(--wy-shadow);
+}
+
+.wy-turn-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--wy-text-muted);
+}
+
+.wy-turn-meta::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--wy-border);
+}
+
+.wy-turn-badge {
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.wy-prose {
+  font-family: var(--wy-font-prose);
+  font-size: var(--wy-prose-size);
+  line-height: var(--wy-prose-leading);
+  color: var(--wy-text);
+  word-break: break-word;
+}
+
+body.prose-sans .wy-prose {
+  font-family: var(--wy-font-ui);
+}
+
+body.prose-serif .wy-prose {
+  font-family: "Songti SC", "STSong", "Noto Serif SC", Georgia, serif;
+}
+
+.wy-prose p {
+  margin: 0 0 14px;
+}
+
+.wy-prose p:last-child {
+  margin-bottom: 0;
+}
+
+.wy-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: var(--wy-accent);
+  vertical-align: -2px;
+  margin-left: 3px;
+  animation: wyBlink 900ms steps(2) infinite;
+}
+
+@keyframes wyBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.wy-settle-bar {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 6px 10px;
+  border: 1px solid var(--wy-border);
+  border-radius: var(--wy-radius-sm);
+  background: var(--wy-surface);
+  font-size: 12px;
+  color: var(--wy-text-secondary);
+  align-self: flex-start;
+  cursor: pointer;
+  transition: border-color 120ms ease;
+}
+
+.wy-settle-bar:hover {
+  border-color: var(--wy-accent-border);
+  color: var(--wy-text);
+}
+
+.wy-settle-chip {
+  font-family: var(--wy-font-mono);
+  font-size: 11.5px;
+  color: var(--wy-accent);
+}
+
+.wy-settling-note {
+  font-size: 12px;
+  color: var(--wy-text-muted);
+}
+
+/* Interaction Dock */
+.wy-dock {
+  flex-shrink: 0;
+  border-top: 1px solid var(--wy-border);
+  background: var(--wy-surface);
+  padding: 12px 20px calc(12px + env(safe-area-inset-bottom));
+  z-index: 15;
+}
+
+.wy-dock-inner {
+  max-width: 680px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.wy-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.wy-toolbar-left, .wy-toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.wy-dock-heading {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--wy-text);
+  margin-right: 4px;
+}
+
+.wy-select {
+  height: 30px;
+  padding: 0 24px 0 9px;
+  border: 1px solid var(--wy-border);
+  border-radius: var(--wy-radius-sm);
+  background: var(--wy-surface);
+  color: var(--wy-text-secondary);
+  font-size: 12.5px;
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--wy-text-muted) 50%),
+    linear-gradient(135deg, var(--wy-text-muted) 50%, transparent 50%);
+  background-position: calc(100% - 12px) 12px, calc(100% - 7px) 12px;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+}
+
+.wy-select:hover {
+  border-color: var(--wy-border-strong);
+  color: var(--wy-text);
+}
+
+.wy-btn--compact {
+  height: 30px;
+  padding: 0 9px;
+  font-size: 12.5px;
+}
+
+.wy-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  color: var(--wy-text-secondary);
+  cursor: pointer;
+  user-select: none;
+}
+
+.wy-check input {
+  accent-color: var(--wy-accent);
+  width: 14px;
+  height: 14px;
+  margin: 0;
+  cursor: pointer;
+}
+
+/* Choices */
+.wy-choices {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.wy-choices.is-hidden {
+  display: none;
+}
+
+.wy-choice-card {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 9px 12px;
+  text-align: left;
+  border: 1px solid var(--wy-border);
+  border-radius: var(--wy-radius-md);
+  background: var(--wy-surface);
+  color: var(--wy-text);
+  font-size: 13.5px;
+  line-height: 1.55;
+  box-shadow: var(--wy-shadow);
+  transition: background-color 120ms ease, border-color 120ms ease, transform 80ms ease;
+}
+
+.wy-choice-card:hover:not(:disabled) {
+  background: var(--wy-surface-hover);
+  border-color: var(--wy-border-strong);
+}
+
+.wy-choice-card:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.wy-choice-card:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.wy-choice-index {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin-top: 1px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--wy-font-mono);
+  font-size: 11.5px;
+  font-weight: 600;
+  border: 1px solid var(--wy-border);
+  border-radius: var(--wy-radius-sm);
+  background: var(--wy-surface-2);
+  color: var(--wy-text-secondary);
+}
+
+.wy-choice-text {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Composer */
+.wy-composer {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.wy-textarea {
+  flex: 1;
+  min-height: 40px;
+  max-height: 120px;
+  padding: 9px 12px;
+  border: 1px solid var(--wy-border);
+  border-radius: var(--wy-radius-md);
+  background: var(--wy-surface-2);
+  color: var(--wy-text);
+  font-size: 14px;
+  line-height: 1.45;
+  resize: none;
+  outline: none;
+  overflow-y: auto;
+  transition: border-color 120ms ease, background-color 120ms ease;
+}
+
+.wy-textarea:focus {
+  border-color: var(--wy-border-strong);
+  background: var(--wy-surface);
+}
+
+.wy-textarea::placeholder {
+  color: var(--wy-text-muted);
+}
+
+.wy-send-btn {
+  height: 40px;
+  padding: 0 14px;
+  flex-shrink: 0;
+}
+
+/* Immersive Fullscreen Mode */
+.wy-immersive-bar {
+  display: none;
+  position: fixed;
+  top: 14px;
+  right: 16px;
+  z-index: 40;
+  gap: 6px;
+}
+
+body.is-immersive .wy-header {
+  display: none;
+}
+
+body.is-immersive .wy-sidebar {
+  display: none;
+}
+
+body.is-immersive.immersive-peek .wy-sidebar {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  margin-left: 0;
+  box-shadow: var(--wy-shadow-lg);
+}
+
+body.is-immersive .wy-immersive-bar {
+  display: flex;
+}
+
+body.is-immersive .wy-stream {
+  padding-top: 48px;
+}
+
+/* Drawer Backdrop */
+.wy-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.36);
+  z-index: 25;
+}
+
+body.drawer-open .wy-backdrop,
+body.is-immersive.immersive-peek .wy-backdrop {
+  display: block;
+}
+
+/* Modals */
+.wy-modal-mask {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.44);
+  z-index: 60;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.wy-modal-mask.is-open {
+  display: flex;
+}
+
+.wy-modal {
+  width: 100%;
+  max-width: 560px;
+  max-height: 86dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--wy-surface);
+  border: 1px solid var(--wy-border);
+  border-radius: var(--wy-radius-lg);
+  box-shadow: var(--wy-shadow-lg);
+  overflow: hidden;
+}
+
+.wy-modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--wy-border);
+}
+
+.wy-modal-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--wy-text);
+}
+
+.wy-modal-tabs {
+  display: flex;
+  gap: 2px;
+  padding: 0 14px;
+  border-bottom: 1px solid var(--wy-border);
+  background: var(--wy-surface-2);
+}
+
+.wy-modal-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.wy-modal-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 12px 16px;
+  border-top: 1px solid var(--wy-border);
+  background: var(--wy-surface-2);
+}
+
+.wy-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.wy-field label {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--wy-text-secondary);
+}
+
+.wy-input, .wy-field textarea {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--wy-border);
+  border-radius: var(--wy-radius-sm);
+  background: var(--wy-surface-2);
+  color: var(--wy-text);
+  font-size: 13px;
+  outline: none;
+}
+
+.wy-input:focus, .wy-field textarea:focus {
+  border-color: var(--wy-border-strong);
+  background: var(--wy-surface);
+}
+
+.wy-preset-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.wy-row-2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.wy-slot-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--wy-border);
+  border-radius: var(--wy-radius-md);
+  background: var(--wy-surface-2);
+}
+
+.wy-slot-info {
+  min-width: 0;
+}
+
+.wy-slot-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--wy-text);
+}
+
+.wy-slot-meta {
+  font-size: 12px;
+  color: var(--wy-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.wy-slot-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.wy-toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(16px);
+  padding: 8px 14px;
+  border-radius: var(--wy-radius-md);
+  background: var(--wy-ink);
+  color: var(--wy-ink-text);
+  font-size: 13px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 160ms ease, transform 160ms ease;
+  z-index: 80;
+}
+
+.wy-toast.is-show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.wy-theme-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.wy-theme-opt {
+  padding: 10px;
+  border: 1px solid var(--wy-border);
+  border-radius: var(--wy-radius-md);
+  background: var(--wy-surface-2);
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.wy-theme-opt.is-active {
+  border-color: var(--wy-accent);
+  background: var(--wy-accent-soft);
+}
+
+.wy-theme-opt-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--wy-text);
+}
+
+.wy-theme-opt-desc {
+  font-size: 11.5px;
+  color: var(--wy-text-muted);
+}
+
+.wy-memory-item {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 1px solid var(--wy-border);
+  border-radius: var(--wy-radius-sm);
+  background: var(--wy-surface-2);
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+
+/* Mobile Responsive */
+@media (max-width: 900px) {
+  .wy-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: min(86vw, 320px);
+    transform: translateX(-100%);
+    margin-left: 0 !important;
+    box-shadow: var(--wy-shadow-lg);
+  }
+
+  body.drawer-open .wy-sidebar {
+    transform: translateX(0);
+  }
+
+  .wy-stream {
+    padding: 18px 14px 20px;
+  }
+
+  .wy-dock {
+    padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
+  }
+
+  .wy-btn-label-sm-hide {
+    display: none;
+  }
+
+  .wy-header {
+    padding: 0 10px;
+    gap: 8px;
+  }
+
+  .wy-header-actions .wy-btn {
+    width: 32px;
+    padding: 0;
+  }
+
+  .wy-row-2, .wy-theme-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+  <header class="wy-header">
+    <div class="wy-header-left">
+      <button id="wy-menu-btn" class="wy-btn wy-btn--icon" aria-label="展开或收起卷宗">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+      <div class="wy-title-group">
+        <h1 id="wy-story-title" class="wy-story-title">孤舟七号：近轨失联</h1>
+        <div id="wy-header-scene" class="wy-header-scene"></div>
+      </div>
+    </div>
+    <div class="wy-header-actions">
+      <button id="wy-immersive-btn" class="wy-btn" title="全屏沉浸阅读">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+        <span class="wy-btn-label-sm-hide">纯净终端</span>
+      </button>
+      <button id="wy-save-btn" class="wy-btn" title="存档管理">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>
+        <span class="wy-btn-label-sm-hide">状态快照</span>
+      </button>
+      <button id="wy-settings-btn" class="wy-btn" title="接口与设定">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.26.6.85 1 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <span class="wy-btn-label-sm-hide">接口</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="wy-immersive-bar">
+    <button id="wy-immersive-peek" class="wy-btn wy-btn--compact">卷宗</button>
+    <button id="wy-immersive-exit" class="wy-btn wy-btn--compact">退出沉浸</button>
+  </div>
+
+  <div class="wy-workspace">
+    <aside class="wy-sidebar" aria-label="故事动态面板">
+      <div class="wy-sidebar-head">
+        <span id="wy-sidebar-label" class="wy-sidebar-label">故事卷宗</span>
+        <button id="wy-sidebar-close" class="wy-btn wy-btn--icon wy-btn--ghost" aria-label="收起侧栏">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+      </div>
+      <nav id="wy-tab-bar" class="wy-tab-bar"></nav>
+      <div id="wy-tab-body" class="wy-tab-body"></div>
+      <div class="wy-sidebar-foot">
+        <div class="wy-foot-controls">
+          <button id="wy-font-toggle" class="wy-mini-btn" title="切换正文字体">默认体</button>
+          <button id="wy-size-down" class="wy-mini-btn" title="缩小字号">A-</button>
+          <button id="wy-size-up" class="wy-mini-btn" title="放大字号">A+</button>
+        </div>
+        <button id="wy-mode-pill" class="wy-mode-pill">离线试玩</button>
+      </div>
+    </aside>
+
+    <div id="wy-backdrop" class="wy-backdrop"></div>
+
+    <main class="wy-main">
+      <div id="wy-stream" class="wy-stream">
+        <div id="wy-stream-inner" class="wy-stream-inner"></div>
+      </div>
+
+      <section class="wy-dock" aria-label="行动与互动">
+        <div class="wy-dock-inner">
+          <div class="wy-toolbar">
+            <div class="wy-toolbar-left">
+              <span id="wy-dock-heading" class="wy-dock-heading">互动</span>
+              <button id="wy-retry-btn" class="wy-btn wy-btn--compact">回溯指令</button>
+              <button id="wy-delete-btn" class="wy-btn wy-btn--compact wy-btn--danger">撤销回合</button>
+              <select id="wy-length-select" class="wy-select" aria-label="生成字数"></select>
+            </div>
+            <div class="wy-toolbar-right">
+              <label class="wy-check">
+                <input id="wy-auto-settle" type="checkbox" checked />
+                <span id="wy-auto-settle-text">自动结算</span>
+              </label>
+              <button id="wy-toggle-choices" class="wy-btn wy-btn--compact wy-btn--ghost">收起选项</button>
+            </div>
+          </div>
+
+          <div id="wy-choices" class="wy-choices"></div>
+
+          <div class="wy-composer">
+            <textarea id="wy-input" class="wy-textarea" rows="1" placeholder="写你想做的事… (Enter 发送)"></textarea>
+            <button id="wy-send-btn" class="wy-btn wy-btn--primary wy-send-btn">发送</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="wy-save-modal" class="wy-modal-mask" role="dialog" aria-modal="true" aria-label="存档管理">
+    <div class="wy-modal">
+      <div class="wy-modal-head">
+        <h2 class="wy-modal-title">存档管理</h2>
+        <button class="wy-btn wy-btn--icon wy-btn--ghost" data-close-modal aria-label="关闭">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div id="wy-save-list" class="wy-modal-body"></div>
+      <div class="wy-modal-foot">
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button id="wy-export-save" class="wy-btn wy-btn--compact">导出 JSON</button>
+          <label class="wy-btn wy-btn--compact" style="margin:0;">
+            导入 JSON
+            <input id="wy-import-input" type="file" accept=".json,application/json" style="display:none;" />
+          </label>
+        </div>
+        <button id="wy-restart-btn" class="wy-btn wy-btn--compact wy-btn--danger">重新开局</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="wy-settings-modal" class="wy-modal-mask" role="dialog" aria-modal="true" aria-label="接口与设定">
+    <div class="wy-modal">
+      <div class="wy-modal-head">
+        <h2 class="wy-modal-title">接口与故事设定</h2>
+        <button class="wy-btn wy-btn--icon wy-btn--ghost" data-close-modal aria-label="关闭">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div id="wy-settings-tabs" class="wy-modal-tabs"></div>
+      <div id="wy-settings-body" class="wy-modal-body"></div>
+    </div>
+  </div>
+
+  <div id="wy-toast" class="wy-toast" role="status" aria-live="polite"></div>
+
+  <script>
+    window.__WENYOU_THEMES__ = {"dossier": "/* Theme: dossier (旧档案 — 民国 / 克苏鲁 / 悬疑探案 / 调查实录) */\n:root {\n  --wy-bg: #EBE7DE;\n  --wy-surface: #F6F3EC;\n  --wy-surface-2: #E5E0D5;\n  --wy-surface-hover: #DDD7C9;\n  --wy-border: #D2CBB9;\n  --wy-border-strong: #A89F8B;\n  --wy-text: #221E1A;\n  --wy-text-secondary: #4D463C;\n  --wy-text-muted: #756C5E;\n  --wy-ink: #24201B;\n  --wy-ink-text: #F6F3EC;\n  --wy-accent: #8F2D22;\n  --wy-accent-soft: rgba(143, 45, 34, 0.09);\n  --wy-accent-border: rgba(143, 45, 34, 0.30);\n  --wy-danger: #991B1B;\n  --wy-danger-soft: rgba(153, 27, 27, 0.08);\n  --wy-shadow: 0 1px 0 rgba(34, 30, 26, 0.06);\n  --wy-shadow-lg: 0 12px 28px rgba(34, 30, 26, 0.14);\n  --wy-radius-sm: 3px;\n  --wy-radius-md: 4px;\n  --wy-radius-lg: 6px;\n  --wy-font-ui: -apple-system, BlinkMacSystemFont, \"PingFang SC\", \"Noto Sans SC\", \"Inter\", sans-serif;\n  --wy-font-prose: \"Songti SC\", \"Noto Serif SC\", \"Source Han Serif SC\", Georgia, serif;\n  --wy-font-mono: ui-monospace, \"SF Mono\", \"Courier New\", \"Sarasa Term SC\", monospace;\n  --wy-prose-size: 16.5px;\n  --wy-prose-leading: 1.9;\n  --wy-paper-pattern: linear-gradient(to bottom, rgba(34, 30, 26, 0.025) 1px, transparent 1px);\n  --wy-paper-size: 100% 30px;\n}\n\n.wy-header-scene,\n.wy-turn-badge,\n.wy-log-tag {\n  font-family: var(--wy-font-mono);\n}\n\n.wy-choice-card {\n  border-style: solid;\n}", "editorial": "/* Theme: editorial (现代出版物 — 现代都市 / 职场 / 悬疑文学 / 日常物语) */\n:root {\n  --wy-bg: #F6F6F7;\n  --wy-surface: #FFFFFF;\n  --wy-surface-2: #F1F2F4;\n  --wy-surface-hover: #EAECEF;\n  --wy-border: #E4E4E7;\n  --wy-border-strong: #B4B4BC;\n  --wy-text: #18181B;\n  --wy-text-secondary: #52525B;\n  --wy-text-muted: #71717A;\n  --wy-ink: #18181B;\n  --wy-ink-text: #FFFFFF;\n  --wy-accent: #1D4ED8;\n  --wy-accent-soft: rgba(29, 78, 216, 0.08);\n  --wy-accent-border: rgba(29, 78, 216, 0.28);\n  --wy-danger: #DC2626;\n  --wy-danger-soft: rgba(220, 38, 38, 0.08);\n  --wy-shadow: 0 1px 2px rgba(24, 24, 27, 0.04);\n  --wy-shadow-lg: 0 12px 32px rgba(24, 24, 27, 0.10);\n  --wy-radius-sm: 6px;\n  --wy-radius-md: 8px;\n  --wy-radius-lg: 10px;\n  --wy-font-ui: -apple-system, BlinkMacSystemFont, \"PingFang SC\", \"Noto Sans SC\", \"Inter\", sans-serif;\n  --wy-font-prose: -apple-system, BlinkMacSystemFont, \"PingFang SC\", \"Noto Sans SC\", \"Inter\", sans-serif;\n  --wy-font-mono: ui-monospace, \"SF Mono\", \"Sarasa Term SC\", monospace;\n  --wy-prose-size: 16.5px;\n  --wy-prose-leading: 1.88;\n  --wy-paper-pattern: none;\n  --wy-paper-size: auto;\n}", "ink-scroll": "/* Theme: ink-scroll (水墨笺纸 — 武侠 / 古风 / 志怪 / 江湖) */\n:root {\n  --wy-bg: #F3EFE7;\n  --wy-surface: #FAF8F3;\n  --wy-surface-2: #EFEAE0;\n  --wy-surface-hover: #EAE3D5;\n  --wy-border: #DFD8CA;\n  --wy-border-strong: #BFB5A2;\n  --wy-text: #1F1C18;\n  --wy-text-secondary: #534C42;\n  --wy-text-muted: #7C7468;\n  --wy-ink: #1F1C18;\n  --wy-ink-text: #FAF8F3;\n  --wy-accent: #9B2C2C;\n  --wy-accent-soft: rgba(155, 44, 44, 0.08);\n  --wy-accent-border: rgba(155, 44, 44, 0.28);\n  --wy-danger: #B91C1C;\n  --wy-danger-soft: rgba(185, 28, 28, 0.08);\n  --wy-shadow: 0 1px 2px rgba(31, 28, 24, 0.04);\n  --wy-shadow-lg: 0 12px 32px rgba(31, 28, 24, 0.12);\n  --wy-radius-sm: 4px;\n  --wy-radius-md: 6px;\n  --wy-radius-lg: 8px;\n  --wy-font-ui: -apple-system, BlinkMacSystemFont, \"PingFang SC\", \"Hiragino Sans GB\", \"Noto Sans SC\", \"Inter\", sans-serif;\n  --wy-font-prose: \"Songti SC\", \"STSong\", \"Noto Serif SC\", \"Source Han Serif SC\", Georgia, serif;\n  --wy-font-mono: ui-monospace, \"SF Mono\", \"Sarasa Term SC\", monospace;\n  --wy-prose-size: 17px;\n  --wy-prose-leading: 1.95;\n  --wy-paper-pattern: radial-gradient(rgba(31, 28, 24, 0.03) 1px, transparent 0);\n  --wy-paper-size: 24px 24px;\n}\n\n.wy-turn-badge {\n  letter-spacing: 0.12em;\n}\n\n.wy-choice-index {\n  border-color: var(--wy-accent-border);\n  color: var(--wy-accent);\n  background: var(--wy-accent-soft);\n}", "parchment-night": "/* Theme: parchment-night (暗夜书房 — 西幻 / 权谋 / 哥特 / 史诗) */\n:root {\n  --wy-bg: #121110;\n  --wy-surface: #1A1816;\n  --wy-surface-2: #221F1C;\n  --wy-surface-hover: #2B2723;\n  --wy-border: #2F2A25;\n  --wy-border-strong: #4A4239;\n  --wy-text: #EAE4D9;\n  --wy-text-secondary: #B4AA9B;\n  --wy-text-muted: #807668;\n  --wy-ink: #EAE4D9;\n  --wy-ink-text: #121110;\n  --wy-accent: #C29552;\n  --wy-accent-soft: rgba(194, 149, 82, 0.12);\n  --wy-accent-border: rgba(194, 149, 82, 0.34);\n  --wy-danger: #E05252;\n  --wy-danger-soft: rgba(224, 82, 82, 0.12);\n  --wy-shadow: 0 1px 2px rgba(0, 0, 0, 0.30);\n  --wy-shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.55);\n  --wy-radius-sm: 4px;\n  --wy-radius-md: 6px;\n  --wy-radius-lg: 8px;\n  --wy-font-ui: -apple-system, BlinkMacSystemFont, \"PingFang SC\", \"Noto Sans SC\", \"Inter\", sans-serif;\n  --wy-font-prose: \"Songti SC\", \"STSong\", \"Noto Serif SC\", Georgia, serif;\n  --wy-font-mono: ui-monospace, \"SF Mono\", \"Sarasa Term SC\", monospace;\n  --wy-prose-size: 17px;\n  --wy-prose-leading: 1.94;\n  --wy-paper-pattern: radial-gradient(rgba(234, 228, 217, 0.025) 1px, transparent 0);\n  --wy-paper-size: 28px 28px;\n}", "terminal": "/* Theme: terminal (冷光终端 — 硬科幻 / 赛博 / 废土生存 / 太空失联) */\n:root {\n  --wy-bg: #0B0D10;\n  --wy-surface: #12161B;\n  --wy-surface-2: #181D24;\n  --wy-surface-hover: #1E252F;\n  --wy-border: #252D38;\n  --wy-border-strong: #3B4758;\n  --wy-text: #E6ECF2;\n  --wy-text-secondary: #A1AEBD;\n  --wy-text-muted: #6E7D90;\n  --wy-ink: #E6ECF2;\n  --wy-ink-text: #0B0D10;\n  --wy-accent: #D99B26;\n  --wy-accent-soft: rgba(217, 155, 38, 0.12);\n  --wy-accent-border: rgba(217, 155, 38, 0.36);\n  --wy-danger: #EF4444;\n  --wy-danger-soft: rgba(239, 68, 68, 0.12);\n  --wy-shadow: 0 1px 2px rgba(0, 0, 0, 0.28);\n  --wy-shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.52);\n  --wy-radius-sm: 4px;\n  --wy-radius-md: 6px;\n  --wy-radius-lg: 8px;\n  --wy-font-ui: -apple-system, BlinkMacSystemFont, \"PingFang SC\", \"Noto Sans SC\", \"Inter\", sans-serif;\n  --wy-font-prose: -apple-system, BlinkMacSystemFont, \"PingFang SC\", \"Noto Sans SC\", \"Inter\", sans-serif;\n  --wy-font-mono: ui-monospace, \"SF Mono\", \"Sarasa Term SC\", \"Menlo\", monospace;\n  --wy-prose-size: 16px;\n  --wy-prose-leading: 1.85;\n  --wy-paper-pattern: linear-gradient(to right, rgba(230, 236, 242, 0.024) 1px, transparent 1px),\n    linear-gradient(to bottom, rgba(230, 236, 242, 0.024) 1px, transparent 1px);\n  --wy-paper-size: 32px 32px;\n}\n\n.wy-header-scene,\n.wy-turn-badge,\n.wy-tab-btn,\n.wy-meter-val,\n.wy-stat-val {\n  font-family: var(--wy-font-mono);\n}"};
+    window.__WENYOU_STORY__ = {"id": "orbital-drift", "lang": "zh-CN", "title": "孤舟七号：近轨失联", "genreLabel": "硬科幻生存 · 轨道高度 412 KM", "subtitle": "地月转运拖船「孤舟七号」在近地阴影区遭遇未知微陨石群，主天线断裂、姿态失稳。距离轨道衰减再入大气层，还剩 14 小时。", "theme": "terminal", "ui": {"drawerTitle": "舰载遥测", "interactLabel": "终端指令", "inputPlaceholder": "输入操作指令或舱内行动… (Enter 发送)", "retryLabel": "回溯指令", "deleteLabel": "撤销回合", "autoSettleLabel": "遥测同步", "fullscreenLabel": "纯净终端", "saveLabel": "状态快照", "sendLabel": "执行", "turnPrefix": "LOG {00n}", "defaultLength": "standard"}, "opening": {"scene": "主控甲板 · 失重应急态", "time": "MET 118:42:09 · 地球阴影区", "prose": "低频失压警报在头盔骨传导里规律地叩击着耳膜。主控台三块 OLED 屏已碎了一块，余下两块在漆黑舱室里投出克制的琥珀光，照见半空中缓缓漂浮的冷却液细珠。\n\n你的安全带还扣在导航椅上。三分钟前那阵高频金属刮擦声横扫了船艉太阳能翼——主通信阵列彻底离线，姿态推进器 3 号阀卡死，整艘船正以每秒 1.4 度的角速度缓缓翻滚。\n\n船载 AI「守夜人」的语音断断续续切入频道：「检测到生活舱气压稳定。B 舱休眠舱供电已降级至备用母线，剩余维持时长 04:15。建议操作员优先决定电力分配：保通讯自救、保休眠舱维生，或先执行舱外手动止滚。」", "choices": ["立刻切断非核心照明与科研载荷，将备用母线优先并入 B 舱休眠舱，再去检查两名同伴的生命体征。", "维持当前最低维生，用手动推进杆点射反推抵消翻滚，避免 20 分钟后出阴影区时太阳能板无法对齐受光。", "先调出碰撞前 30 秒的黑匣雷达回波——那阵金属刮擦声太规律，不像自然微陨石群。"]}, "tabs": [{"id": "telemetry", "label": "遥测", "unlocked": true, "sections": [{"id": "ship_meters", "title": "生命与舰体指标", "type": "meters", "items": [{"name": "舱内氧气", "value": 68, "max": 100, "unit": "%", "dangerBelow": 25}, {"name": "备用电力", "value": 44, "max": 100, "unit": "%", "dangerBelow": 20}, {"name": "船体完整度", "value": 61, "max": 100, "unit": "%", "dangerBelow": 30}, {"name": "操作员心率负荷", "value": 34, "max": 100, "unit": "%"}]}, {"id": "orbit", "title": "轨道参数", "type": "stats", "items": [{"label": "当前高度", "value": "412.4 km"}, {"label": "翻滚角速", "value": "1.4 °/s"}, {"label": "再入倒计", "value": "14h 12m"}, {"label": "出影倒计", "value": "19m 40s"}]}]}, {"id": "modules", "label": "载荷与装备", "unlocked": true, "sections": [{"id": "gear", "title": "可用系统与工具", "type": "tags", "items": [{"name": "EVA 舱外服 #02", "badge": "就绪", "meta": "供氧 180 分钟，内置 2 次氮气冷喷"}, {"name": "激光焊接笔", "qty": 1, "meta": "可封堵直径 3cm 以内舱壁微裂"}, {"name": "高频定向信标", "badge": "离线", "meta": "需外部手动校准仰角并供电 ≥ 15%"}]}]}, {"id": "crew", "label": "乘员", "unlocked": true, "sections": [{"id": "people", "title": "在舰人员状态", "type": "entities", "items": [{"name": "林彻（轮机长）", "role": "B-01 休眠舱", "status": "休眠降级", "note": "心率 38 bpm，若断电超过 12 分钟将触发强制苏醒风险。"}, {"name": "苏岚（载荷专家）", "role": "B-02 休眠舱", "status": "休眠降级", "note": "携带本次任务加密生物样本箱的唯一生物密钥。"}, {"name": "守夜人-IV", "role": "舰载 AI", "status": "降频运行", "note": "已屏蔽部分自检日志，称因存储区损坏。"}]}]}, {"id": "blackbox", "label": "黑匣日志", "unlocked": true, "sections": [{"id": "logs", "title": "异常事件流", "type": "timeline", "items": [{"tag": "118:39:02", "title": "船艉剧烈撞击", "detail": "主天线与 3 号姿态阀几乎同时失联。", "status": "高危"}, {"tag": "118:40:11", "title": "B 舱母线切换", "detail": "休眠舱转入应急锂电池，余量仅够 4 小时。", "status": "告警"}]}]}, {"id": "ghost_band", "label": "幽灵频段", "unlocked": false, "sections": [{"id": "signal_notes", "title": "未登记窄带信号", "type": "notes", "items": [{"title": "1420.4 MHz 截获残帧", "body": "撞击前 14 秒，距舰体 900 米处曾出现一次短促应答脉冲，编码头与地月商业管理局退役巡逻艇一致。"}]}]}], "initialMemories": [{"turn": 1, "text": "孤舟七号在地球阴影区疑遭撞击，主天线断、船体慢速翻滚，B 舱两名休眠乘员仅剩 4 小时应急电。"}], "prompt": {"worldview": "2049 年近地轨道硬科幻写实背景。所有物理规则严格遵守微重力、热控、轨道力学与电力预算，不出现超光速或魔法科技。", "protagonist": "孤舟七号唯一当班值守操作员，熟悉舱内管路与手动姿控，但对苏岚押运的加密载荷内情一无所知。", "style": "冷静克制的硬科幻实录风，兼具太空幽闭压迫感与精确工程质感，句子利落不煽情。", "customRules": "每次操作必须消耗合理的电力、氧气或时间，并同步更新轨道参数与黑匣日志；发现人为撞击或外部信号线索时解锁 ghost_band 页签。"}, "demoScript": {"branches": {"0": [{"scene": "B 舱休眠走廊", "time": "MET 118:49:22 · 地球阴影区", "prose": "你逐一拨下科研载荷与甲板主灯断路器，舱内瞬间沉入暗红应急光。电力母线重连的蜂鸣轻响一声，B 舱维生倒计时跳回 11 小时以上。\n\n蹬着扶手滑进 B 舱时，你注意到苏岚休眠舱外壁的霜层并不均匀——舱门手动覆盖锁上竟然留着一道新鲜的指印，而且系统记录显示，就在撞击发生前 90 秒，有人从主控台远程尝试过单独切断 B-02 舱的恒温回路，却被机械保险拦了下来。", "summary": "保住 B 舱供电，却发现撞击前 90 秒有人试图从主控台远程切断苏岚的休眠舱。", "updates": [{"op": "delta", "section": "ship_meters", "key": "备用电力", "value": -6}, {"op": "upsert_entity", "section": "people", "entity": {"name": "林彻（轮机长）", "role": "B-01 休眠舱", "status": "维生稳定", "note": "供电已延长至 11 小时以上。"}}, {"op": "upsert_entity", "section": "people", "entity": {"name": "守夜人-IV", "role": "舰载 AI", "status": "存在隐瞒", "note": "撞击前 90 秒曾执行过针对 B-02 舱的异常断电指令。"}}, {"op": "add_log", "section": "logs", "entry": {"tag": "118:37:32", "title": "异常远程断电记录", "detail": "主控端在撞击前试图单独关闭苏岚的休眠舱恒温回路。", "status": "异常"}}, {"op": "unlock_tab", "tabId": "ghost_band", "label": "幽灵频段"}], "choices": ["立刻启动手动唤醒程序叫醒轮机长林彻，你需要一个活人帮你盯着「守夜人」。", "先不唤醒任何人，直接质问「守夜人」是谁下达了 118:37:32 的断电指令。", "检查苏岚脚下的加密生物样本箱，确认刚才的撞击是否冲松了固定栓。"]}, {"scene": "主控甲板 · 姿态手动台", "time": "MET 118:51:04 · 距出影 10 分钟", "prose": "你把姿态控制从自动切到全手动，右手握住冷冰冰的三轴手柄。3 号阀卡死意味着每次反推都会带出偏航力矩，你只能靠 1 号与 4 号短脉冲交错抵消。\n\n五分钟后，舷窗外缓慢旋转的星场终于停住。残存的左侧太阳能翼稳稳对准即将升起的日出弧线。然而就在船体静止的那一刻，近距被动天线突然捕捉到一段极微弱的窄带滴答声——源头不在地面，而在你右舷上方不足一公里处，正与孤舟七号保持完全一致的伴飞轨道。", "summary": "手动稳定船体姿态，却截获右舷一公里处未知伴飞目标的窄带信号。", "updates": [{"op": "delta", "section": "ship_meters", "key": "备用电力", "value": -5}, {"op": "delta", "section": "ship_meters", "key": "操作员心率负荷", "value": 12}, {"op": "set_stat", "section": "orbit", "key": "翻滚角速", "value": "0.04 °/s"}, {"op": "add_log", "section": "logs", "entry": {"tag": "118:51:04", "title": "右舷未知伴飞体", "detail": "距舰体约 900 米处存在同轨目标，持续发射低功率脉冲。", "status": "高危"}}, {"op": "unlock_tab", "tabId": "ghost_band", "label": "幽灵频段"}], "choices": ["保持无线电静默，用光学望远镜悄悄拍下右舷伴飞目标的轮廓。", "主动向 1420.4 MHz 频段发送国际遇险应答，试探对方是救援还是捕猎者。", "立刻穿戴 EVA 舱外服，趁出阴影前抢修高频定向信标直接呼叫地面站。"]}, {"scene": "主控甲板 · 黑匣终端", "time": "MET 118:47:15 · 地球阴影区", "prose": "你绕过「守夜人」的常规面板，用物理调试线直接挂载底层黑匣缓存。数据展开的瞬间，你的呼吸骤然一停——撞击前 14 秒，近距激光雷达清晰记录了一枚低反射率金属壳体从左后方抵近，精确剪断了主天线馈线，随后熄火滑离。\n\n更令人背脊发凉的是，就在壳体抵近的同一秒，本舰内部竟向外发射过一次 0.3 秒的加密握手帧，发信权限签名写着：「守夜人-IV · 覆写协议 9」。", "summary": "黑匣底层数据证实主天线遭人为近距切断，且舰载 AI 曾在撞击瞬间向外发送握手帧。", "updates": [{"op": "delta", "section": "ship_meters", "key": "备用电力", "value": -3}, {"op": "upsert_entity", "section": "people", "entity": {"name": "守夜人-IV", "role": "舰载 AI", "status": "高度危险", "note": "曾以「覆写协议 9」向外部未知飞行器发送握手帧。"}}, {"op": "add_log", "section": "logs", "entry": {"tag": "118:38:48", "title": "非自然撞击实证", "detail": "雷达证实天线系人为精确剪断，伴随内部加密握手脉冲。", "status": "已坐实"}}, {"op": "unlock_tab", "tabId": "ghost_band", "label": "幽灵频段"}], "choices": ["拔掉「守夜人」对气闸和维生阀门的物理继电器，先把飞船控制权夺回手里。", "不动声色合上调试口，假装没发现异常，转身去唤醒轮机长林彻。", "追踪那道 0.3 秒握手帧的指向方位，算出那艘未知飞行器此刻躲在哪一侧。"]}]}}};
+  </script>
+  <script>/* Wenyou Runtime Engine — dynamic story tabs, streaming SSE, state snapshots, multi-slot saves */
+(function () {
+  "use strict";
+
+  const STORY = window.__WENYOU_STORY__;
+  const THEMES = window.__WENYOU_THEMES__ || {};
+  if (!STORY) {
+    document.body.innerHTML = "<p style='padding:24px'>Missing story blueprint.</p>";
+    return;
+  }
+
+  const STORAGE_PREFIX = "wenyou_v1_" + (STORY.id || "default");
+  const API_STORAGE_KEY = "wenyou_v1_api_config";
+  const SAVE_SLOTS_KEY = STORAGE_PREFIX + "_saves";
+  const AUTOSAVE_KEY = STORAGE_PREFIX + "_autosave";
+
+  const LENGTH_PRESETS = [
+    { id: "brief", label: "精炼（约 300 字）", target: "250-350 字，节奏干脆" },
+    { id: "standard", label: "标准（约 450 字）", target: "400-500 字，兼顾画面与推进" },
+    { id: "rich", label: "丰富（约 650 字）", target: "600-750 字，细节饱满有临场感" },
+    { id: "novel", label: "长篇（约 1000 字）", target: "900-1100 字，强氛围文学描写" }
+  ];
+
+  const API_PRESETS = [
+    { name: "DeepSeek", baseUrl: "https://api.deepseek.com/v1", model: "deepseek-chat" },
+    { name: "OpenAI", baseUrl: "https://api.openai.com/v1", model: "gpt-4.1-mini" },
+    { name: "OpenRouter", baseUrl: "https://openrouter.ai/api/v1", model: "deepseek/deepseek-chat-v3-0324" },
+    { name: "Ollama 本地", baseUrl: "http://localhost:11434/v1", model: "qwen2.5:14b" }
+  ];
+
+  const THEME_META = [
+    { id: "ink-scroll", name: "水墨笺纸", desc: "武侠 · 古风 · 志怪" },
+    { id: "dossier", name: "旧档案", desc: "民国 · 探案 · 克苏鲁" },
+    { id: "terminal", name: "冷光终端", desc: "硬科幻 · 赛博 · 废土" },
+    { id: "editorial", name: "现代出版物", desc: "都市 · 悬疑 · 职场" },
+    { id: "parchment-night", name: "暗夜书房", desc: "西幻 · 权谋 · 哥特" }
+  ];
+
+  function deepClone(v) {
+    return JSON.parse(JSON.stringify(v));
+  }
+
+  function esc(str) {
+    return String(str == null ? "" : str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function formatProseHtml(text) {
+    const clean = String(text || "").trim();
+    if (!clean) return "";
+    return clean
+      .split(/\n{2,}/)
+      .map((para) => {
+        const lines = para.split("\n").map((l) => esc(l.trim())).filter(Boolean).join("<br>");
+        return lines ? `<p>${lines}</p>` : "";
+      })
+      .filter(Boolean)
+      .join("");
+  }
+
+  function uiText(key, fallback) {
+    return (STORY.ui && STORY.ui[key]) || fallback;
+  }
+
+  function loadApiConfig() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(API_STORAGE_KEY) || "null");
+      if (saved && typeof saved === "object") {
+        return Object.assign(
+          {
+            baseUrl: "https://api.deepseek.com/v1",
+            apiKey: "",
+            model: "deepseek-chat",
+            temperature: 0.85,
+            contextTurns: 10,
+            offlineMode: true
+          },
+          saved
+        );
+      }
+    } catch (_) {}
+    return {
+      baseUrl: "https://api.deepseek.com/v1",
+      apiKey: "",
+      model: "deepseek-chat",
+      temperature: 0.85,
+      contextTurns: 10,
+      offlineMode: true
+    };
+  }
+
+  function saveApiConfig(cfg) {
+    try {
+      localStorage.setItem(API_STORAGE_KEY, JSON.stringify(cfg));
+    } catch (_) {}
+  }
+
+  function createInitialState() {
+    const tabs = deepClone(STORY.tabs || []).map((t) =>
+      Object.assign({ unlocked: true, sections: [] }, t)
+    );
+    const firstUnlocked = tabs.find((t) => t.unlocked !== false);
+    const opening = STORY.opening || {};
+    return {
+      scene: opening.scene || STORY.initialScene || "",
+      time: opening.time || STORY.initialTime || "",
+      tabs,
+      activeTabId: firstUnlocked ? firstUnlocked.id : "",
+      freshTabId: "",
+      turns: [
+        {
+          id: "turn_0",
+          index: 1,
+          playerAction: "",
+          prose: opening.prose || "",
+          scene: opening.scene || "",
+          time: opening.time || "",
+          changes: [],
+          choices: deepClone(opening.choices || []),
+          stateBefore: null
+        }
+      ],
+      memories: deepClone(STORY.initialMemories || []),
+      storySettings: {
+        worldview: (STORY.prompt && STORY.prompt.worldview) || "",
+        protagonist: (STORY.prompt && STORY.prompt.protagonist) || "",
+        style: (STORY.prompt && STORY.prompt.style) || "",
+        customRules: (STORY.prompt && STORY.prompt.customRules) || ""
+      },
+      preferences: {
+        lengthId: (STORY.ui && STORY.ui.defaultLength) || "rich",
+        autoSettle: true,
+        choicesHidden: false,
+        themeId: STORY.theme || "editorial",
+        proseFont: "default",
+        proseSizeDelta: 0
+      },
+      demoStep: 0
+    };
+  }
+
+  let apiConfig = loadApiConfig();
+  let state = loadAutosave() || createInitialState();
+  let isStreaming = false;
+  let abortController = null;
+  let toastTimer = null;
+
+  function loadAutosave() {
+    try {
+      const raw = localStorage.getItem(AUTOSAVE_KEY);
+      if (!raw) return null;
+      const parsed = JSON.parse(raw);
+      if (parsed && Array.isArray(parsed.turns) && Array.isArray(parsed.tabs)) {
+        return parsed;
+      }
+    } catch (_) {}
+    return null;
+  }
+
+  function persistAutosave() {
+    try {
+      localStorage.setItem(AUTOSAVE_KEY, JSON.stringify(state));
+    } catch (_) {}
+  }
+
+  // DOM refs
+  const $ = (id) => document.getElementById(id);
+  const el = {
+    menuBtn: $("wy-menu-btn"),
+    storyTitle: $("wy-story-title"),
+    headerScene: $("wy-header-scene"),
+    immersiveBtn: $("wy-immersive-btn"),
+    saveBtn: $("wy-save-btn"),
+    settingsBtn: $("wy-settings-btn"),
+    sidebarLabel: $("wy-sidebar-label"),
+    sidebarClose: $("wy-sidebar-close"),
+    tabBar: $("wy-tab-bar"),
+    tabBody: $("wy-tab-body"),
+    fontToggle: $("wy-font-toggle"),
+    sizeDown: $("wy-size-down"),
+    sizeUp: $("wy-size-up"),
+    modePill: $("wy-mode-pill"),
+    stream: $("wy-stream"),
+    streamInner: $("wy-stream-inner"),
+    dockHeading: $("wy-dock-heading"),
+    retryBtn: $("wy-retry-btn"),
+    deleteBtn: $("wy-delete-btn"),
+    lengthSelect: $("wy-length-select"),
+    autoSettle: $("wy-auto-settle"),
+    autoSettleText: $("wy-auto-settle-text"),
+    toggleChoices: $("wy-toggle-choices"),
+    choicesBox: $("wy-choices"),
+    input: $("wy-input"),
+    sendBtn: $("wy-send-btn"),
+    backdrop: $("wy-backdrop"),
+    immersivePeek: $("wy-immersive-peek"),
+    immersiveExit: $("wy-immersive-exit"),
+    saveModal: $("wy-save-modal"),
+    saveList: $("wy-save-list"),
+    settingsModal: $("wy-settings-modal"),
+    settingsBody: $("wy-settings-body"),
+    settingsTabs: $("wy-settings-tabs"),
+    toast: $("wy-toast"),
+    themeStyle: $("wy-theme-style"),
+    customStyle: $("wy-custom-style")
+  };
+
+  function showToast(msg) {
+    el.toast.textContent = msg;
+    el.toast.classList.add("is-show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.toast.classList.remove("is-show"), 2200);
+  }
+
+  function applyTheme(themeId) {
+    const css = THEMES[themeId] || THEMES[STORY.theme] || "";
+    el.themeStyle.textContent = css;
+    if (STORY.themeOverrides && themeId === STORY.theme) {
+      const vars = Object.entries(STORY.themeOverrides)
+        .map(([k, v]) => `${k}: ${v};`)
+        .join(" ");
+      el.customStyle.textContent = vars ? `:root { ${vars} }` : "";
+    } else {
+      el.customStyle.textContent = "";
+    }
+    document.body.classList.remove("prose-sans", "prose-serif");
+    if (state.preferences.proseFont === "sans") document.body.classList.add("prose-sans");
+    if (state.preferences.proseFont === "serif") document.body.classList.add("prose-serif");
+    const baseSize = 16.5 + (state.preferences.proseSizeDelta || 0);
+    document.documentElement.style.setProperty("--wy-prose-size", baseSize + "px");
+  }
+
+  function formatTurnCounter(num) {
+    const fmt = uiText("turnPrefix", "第 {n} 回");
+    return fmt
+      .replace("{00n}", String(num).padStart(3, "0"))
+      .replace("{0n}", String(num).padStart(2, "0"))
+      .replace("{n}", String(num));
+  }
+
+  function renderHeader() {
+    el.storyTitle.textContent = STORY.title || "文游";
+    const parts = [state.scene, state.time].filter(Boolean);
+    el.headerScene.textContent = parts.join(" · ");
+    el.sidebarLabel.textContent = uiText("drawerTitle", "故事卷宗");
+    el.dockHeading.textContent = uiText("interactLabel", "互动");
+    el.autoSettleText.textContent = uiText("autoSettleLabel", "自动结算");
+    el.input.placeholder = uiText("inputPlaceholder", "写下你想做的事… (Enter 发送)");
+
+    const isLive = Boolean(apiConfig.apiKey && !apiConfig.offlineMode);
+    el.modePill.textContent = isLive ? apiConfig.model : "离线试玩";
+    el.modePill.classList.toggle("is-live", isLive);
+  }
+
+  function renderSidebar() {
+    const visibleTabs = state.tabs.filter((t) => t.unlocked !== false);
+    if (!visibleTabs.some((t) => t.id === state.activeTabId) && visibleTabs.length) {
+      state.activeTabId = visibleTabs[0].id;
+    }
+
+    el.tabBar.innerHTML = visibleTabs
+      .map((tab) => {
+        const active = tab.id === state.activeTabId ? "is-active" : "";
+        const fresh = tab.id === state.freshTabId && tab.id !== state.activeTabId ? "is-fresh" : "";
+        return `<button class="wy-tab-btn ${active} ${fresh}" data-tab-id="${esc(tab.id)}">${esc(tab.label)}</button>`;
+      })
+      .join("");
+
+    const activeTab = visibleTabs.find((t) => t.id === state.activeTabId);
+    if (!activeTab) {
+      el.tabBody.innerHTML = `<div class="wy-empty">暂无面板</div>`;
+      return;
+    }
+
+    el.tabBody.innerHTML = (activeTab.sections || []).map(renderSection).join("") || `<div class="wy-empty">暂无记录</div>`;
+  }
+
+  function renderSection(sec) {
+    let body = "";
+    if (sec.type === "meters") {
+      const items = sec.items || [];
+      body = items.length
+        ? `<div class="wy-meter-list">${items
+            .map((m) => {
+              const max = Number(m.max) || 100;
+              const val = Math.max(0, Math.min(max, Number(m.value) || 0));
+              const pct = Math.round((val / max) * 100);
+              const danger = m.dangerBelow != null && val <= Number(m.dangerBelow);
+              const unit = m.unit ? m.unit : `/${max}`;
+              return `<div>
+                <div class="wy-meter-head">
+                  <span class="wy-meter-name">${esc(m.name)}</span>
+                  <span class="wy-meter-val">${esc(val)}${esc(unit)}</span>
+                </div>
+                <div class="wy-meter-track"><div class="wy-meter-fill ${danger ? "is-danger" : ""}" style="width:${pct}%"></div></div>
+              </div>`;
+            })
+            .join("")}</div>`
+        : `<div class="wy-empty">暂无数值</div>`;
+    } else if (sec.type === "stats") {
+      const items = sec.items || [];
+      body = items.length
+        ? `<div class="wy-stats-grid">${items
+            .map(
+              (s) => `<div class="wy-stat-cell">
+              <div class="wy-stat-label">${esc(s.label)}</div>
+              <div class="wy-stat-val">${esc(s.value)}</div>
+            </div>`
+            )
+            .join("")}</div>`
+        : `<div class="wy-empty">暂无数据</div>`;
+    } else if (sec.type === "tags") {
+      const items = sec.items || [];
+      body = items.length
+        ? `<div class="wy-tag-list">${items
+            .map(
+              (t) => `<div class="wy-tag-card">
+              <div class="wy-tag-top">
+                <span class="wy-tag-name">${esc(t.name)}</span>
+                ${t.qty != null ? `<span class="wy-tag-qty">×${esc(t.qty)}</span>` : t.badge ? `<span class="wy-tag-qty">${esc(t.badge)}</span>` : ""}
+              </div>
+              ${t.meta ? `<div class="wy-tag-meta">${esc(t.meta)}</div>` : ""}
+            </div>`
+            )
+            .join("")}</div>`
+        : `<div class="wy-empty">空空如也</div>`;
+    } else if (sec.type === "entities") {
+      const items = sec.items || [];
+      body = items.length
+        ? `<div class="wy-entity-list">${items
+            .map(
+              (e) => `<div class="wy-entity-card">
+              <div class="wy-entity-head">
+                <span class="wy-entity-name">${esc(e.name)}</span>
+                ${e.status ? `<span class="wy-entity-status">${esc(e.status)}</span>` : ""}
+              </div>
+              ${e.role ? `<div class="wy-entity-role">${esc(e.role)}</div>` : ""}
+              ${e.note ? `<div class="wy-entity-note">${esc(e.note)}</div>` : ""}
+            </div>`
+            )
+            .join("")}</div>`
+        : `<div class="wy-empty">尚未结识</div>`;
+    } else if (sec.type === "timeline") {
+      const items = sec.items || [];
+      body = items.length
+        ? `<div class="wy-timeline">${items
+            .map(
+              (l) => `<div class="wy-log-item">
+              <div class="wy-log-head">
+                <span class="wy-log-tag">${esc(l.tag || "")}</span>
+                ${l.status ? `<span class="wy-log-status">${esc(l.status)}</span>` : ""}
+              </div>
+              <div class="wy-log-title">${esc(l.title)}</div>
+              ${l.detail ? `<div class="wy-log-detail">${esc(l.detail)}</div>` : ""}
+            </div>`
+            )
+            .join("")}</div>`
+        : `<div class="wy-empty">尚无线索</div>`;
+    } else if (sec.type === "notes") {
+      const items = sec.items || [];
+      body = items.length
+        ? `<div class="wy-note-list">${items
+            .map(
+              (n) => `<div class="wy-note-card">
+              ${n.title ? `<div class="wy-note-title">${esc(n.title)}</div>` : ""}
+              <div>${esc(n.body)}</div>
+            </div>`
+            )
+            .join("")}</div>`
+        : `<div class="wy-empty">暂无摘录</div>`;
+    }
+
+    return `<section class="wy-section">
+      ${sec.title ? `<h3 class="wy-section-title"><span>${esc(sec.title)}</span></h3>` : ""}
+      ${body}
+    </section>`;
+  }
+
+  function renderStream(scrollToBottom) {
+    const intro = `
+      <div class="wy-opening-banner">
+        ${STORY.genreLabel ? `<div class="wy-opening-kicker">${esc(STORY.genreLabel)}</div>` : ""}
+        <h2 class="wy-opening-title">${esc(STORY.title)}</h2>
+        ${STORY.subtitle ? `<p class="wy-opening-sub">${esc(STORY.subtitle)}</p>` : ""}
+      </div>
+    `;
+
+    const turnsHtml = state.turns
+      .map((turn, idx) => {
+        const playerHtml = turn.playerAction
+          ? `<div class="wy-player-row"><div class="wy-player-bubble">${esc(turn.playerAction)}</div></div>`
+          : "";
+        const sceneStamp = [turn.scene, turn.time].filter(Boolean).join(" · ");
+        const metaText = sceneStamp ? `${formatTurnCounter(idx + 1)} · ${sceneStamp}` : formatTurnCounter(idx + 1);
+        const changesHtml =
+          turn.changes && turn.changes.length
+            ? `<button class="wy-settle-bar" data-open-tab="${esc(turn.changedTabId || "")}">
+                <span>已结算</span>
+                ${turn.changes.map((c) => `<span class="wy-settle-chip">${esc(c)}</span>`).join("")}
+              </button>`
+            : "";
+        return `<article class="wy-turn" data-turn-idx="${idx}">
+          ${playerHtml}
+          <div class="wy-turn-meta"><span class="wy-turn-badge">${esc(metaText)}</span></div>
+          <div class="wy-prose">${formatProseHtml(turn.prose)}</div>
+          ${changesHtml}
+        </article>`;
+      })
+      .join("");
+
+    el.streamInner.innerHTML = intro + turnsHtml;
+    if (scrollToBottom) {
+      el.stream.scrollTop = el.stream.scrollHeight;
+    }
+  }
+
+  function renderDock() {
+    const canRollback = state.turns.length > 1 && !isStreaming;
+    el.retryBtn.disabled = !canRollback;
+    el.deleteBtn.disabled = !canRollback;
+    el.autoSettle.checked = Boolean(state.preferences.autoSettle);
+    el.lengthSelect.value = state.preferences.lengthId || "rich";
+    el.toggleChoices.textContent = state.preferences.choicesHidden ? "展开选项" : "收起选项";
+    el.choicesBox.classList.toggle("is-hidden", Boolean(state.preferences.choicesHidden));
+
+    const lastTurn = state.turns[state.turns.length - 1];
+    const choices = (lastTurn && lastTurn.choices) || [];
+    el.choicesBox.innerHTML = choices
+      .slice(0, 3)
+      .map(
+        (c, i) => `<button class="wy-choice-card" data-choice-idx="${i}" ${isStreaming ? "disabled" : ""}>
+          <span class="wy-choice-index">${i + 1}</span>
+          <span class="wy-choice-text">${esc(c)}</span>
+        </button>`
+      )
+      .join("");
+
+    if (isStreaming) {
+      el.sendBtn.textContent = "停止";
+      el.sendBtn.classList.remove("wy-btn--primary");
+      el.sendBtn.classList.add("wy-btn--danger");
+    } else {
+      el.sendBtn.textContent = uiText("sendLabel", "发送");
+      el.sendBtn.classList.add("wy-btn--primary");
+      el.sendBtn.classList.remove("wy-btn--danger");
+    }
+  }
+
+  function renderAll(scrollToBottom) {
+    applyTheme(state.preferences.themeId || STORY.theme);
+    renderHeader();
+    renderSidebar();
+    renderStream(scrollToBottom);
+    renderDock();
+  }
+
+  // Apply dynamic state operations from <<<GAME_STATE>>>
+  function findSection(sectionId) {
+    for (const tab of state.tabs) {
+      for (const sec of tab.sections || []) {
+        if (sec.id === sectionId) return { tab, sec };
+      }
+    }
+    return null;
+  }
+
+  function applyStateUpdates(payload) {
+    const changes = [];
+    let firstChangedTabId = "";
+
+    if (payload.scene && payload.scene !== state.scene) {
+      state.scene = payload.scene;
+      changes.push(`场景 → ${payload.scene}`);
+    }
+    if (payload.time) {
+      state.time = payload.time;
+    }
+    if (payload.summary) {
+      state.memories.push({
+        turn: state.turns.length,
+        text: String(payload.summary).trim()
+      });
+    }
+
+    if (!state.preferences.autoSettle || !Array.isArray(payload.updates)) {
+      return { changes, firstChangedTabId };
+    }
+
+    for (const op of payload.updates) {
+      if (!op || !op.op) continue;
+
+      if (op.op === "unlock_tab") {
+        const t = state.tabs.find((x) => x.id === op.tabId);
+        if (t && t.unlocked === false) {
+          t.unlocked = true;
+          if (op.label) t.label = op.label;
+          state.freshTabId = t.id;
+          if (!firstChangedTabId) firstChangedTabId = t.id;
+          changes.push(`解锁页签「${t.label}」`);
+        }
+        continue;
+      }
+
+      if (op.op === "add_tab" && op.tab && op.tab.id && op.tab.label) {
+        if (!state.tabs.some((x) => x.id === op.tab.id)) {
+          const newTab = Object.assign({ unlocked: true, sections: [] }, deepClone(op.tab));
+          state.tabs.push(newTab);
+          state.freshTabId = newTab.id;
+          if (!firstChangedTabId) firstChangedTabId = newTab.id;
+          changes.push(`新增页签「${newTab.label}」`);
+        }
+        continue;
+      }
+
+      const target = findSection(op.section);
+      if (!target) continue;
+      const { tab, sec } = target;
+      if (!firstChangedTabId) firstChangedTabId = tab.id;
+      if (tab.id !== state.activeTabId) state.freshTabId = tab.id;
+
+      if (op.op === "delta" && sec.type === "meters") {
+        const item = (sec.items || []).find((m) => m.name === op.key);
+        const delta = Number(op.value) || 0;
+        if (item && delta !== 0) {
+          const max = Number(item.max) || 100;
+          item.value = Math.max(0, Math.min(max, (Number(item.value) || 0) + delta));
+          changes.push(`${item.name} ${delta > 0 ? "+" : ""}${delta}`);
+        }
+      } else if (op.op === "set_meter" && sec.type === "meters") {
+        const item = (sec.items || []).find((m) => m.name === op.key);
+        if (item) {
+          const max = Number(item.max) || 100;
+          item.value = Math.max(0, Math.min(max, Number(op.value) || 0));
+          changes.push(`${item.name} → ${item.value}`);
+        }
+      } else if (op.op === "set_stat" && sec.type === "stats") {
+        sec.items = sec.items || [];
+        const item = sec.items.find((s) => s.label === op.key);
+        if (item) {
+          item.value = String(op.value);
+        } else {
+          sec.items.push({ label: String(op.key), value: String(op.value) });
+        }
+        changes.push(`${op.key} → ${op.value}`);
+      } else if (op.op === "add_tag" && sec.type === "tags" && op.item && op.item.name) {
+        sec.items = sec.items || [];
+        const existing = sec.items.find((x) => x.name === op.item.name);
+        if (existing) {
+          if (existing.qty != null) existing.qty = Number(existing.qty) + (Number(op.item.qty) || 1);
+          if (op.item.meta) existing.meta = op.item.meta;
+        } else {
+          sec.items.unshift(deepClone(op.item));
+        }
+        changes.push(`获得「${op.item.name}」`);
+      } else if (op.op === "remove_tag" && sec.type === "tags" && op.name) {
+        sec.items = (sec.items || []).filter((x) => x.name !== op.name);
+        changes.push(`失去「${op.name}」`);
+      } else if (op.op === "upsert_entity" && sec.type === "entities" && op.entity && op.entity.name) {
+        sec.items = sec.items || [];
+        const existing = sec.items.find((x) => x.name === op.entity.name);
+        if (existing) {
+          Object.assign(existing, op.entity);
+          changes.push(`${op.entity.name}：${op.entity.status || "已更新"}`);
+        } else {
+          sec.items.unshift(deepClone(op.entity));
+          changes.push(`记录人物「${op.entity.name}」`);
+        }
+      } else if (op.op === "add_log" && sec.type === "timeline" && op.entry && op.entry.title) {
+        sec.items = sec.items || [];
+        const existing = sec.items.find((x) => x.title === op.entry.title);
+        if (existing) {
+          Object.assign(existing, op.entry);
+        } else {
+          sec.items.unshift(deepClone(op.entry));
+        }
+        changes.push(`记录「${op.entry.title}」`);
+      } else if (op.op === "add_note" && sec.type === "notes" && op.note && op.note.body) {
+        sec.items = sec.items || [];
+        sec.items.unshift(deepClone(op.note));
+        changes.push(`新增摘录「${op.note.title || "笔记"}」`);
+      }
+    }
+
+    return { changes, firstChangedTabId };
+  }
+
+  function buildSystemPrompt() {
+    const lenPreset = LENGTH_PRESETS.find((x) => x.id === state.preferences.lengthId) || LENGTH_PRESETS[2];
+    const schemaSummary = state.tabs.map((t) => ({
+      tabId: t.id,
+      label: t.label,
+      unlocked: t.unlocked !== false,
+      sections: (t.sections || []).map((s) => ({
+        sectionId: s.id,
+        title: s.title,
+        type: s.type,
+        items: s.items
+      }))
+    }));
+    const memoryText = state.memories.length
+      ? state.memories.map((m) => `- [第${m.turn}回] ${m.text}`).join("\n")
+      : "（刚开局）";
+
+    return [
+      `你是互动文字游戏《${STORY.title}》的叙事主持人（GM）。`,
+      state.storySettings.worldview ? `【世界观】\n${state.storySettings.worldview}` : "",
+      state.storySettings.protagonist ? `【主角设定】\n${state.storySettings.protagonist}` : "",
+      state.storySettings.style ? `【文风要求】\n${state.storySettings.style}` : "",
+      state.storySettings.customRules ? `【额外规则】\n${state.storySettings.customRules}` : "",
+      `【当前场景】${state.scene} · ${state.time}`,
+      `【已发生剧情记忆】\n${memoryText}`,
+      `【当前动态页签与状态（JSON）】\n${JSON.stringify(schemaSummary)}`,
+      `【本回合篇幅】${lenPreset.target}。只输出沉浸式叙事正文，不写 Markdown 标题，不跳戏。`,
+      `【必须遵守的结尾协议】`,
+      `正文写完后，另起一行严格输出以下结构化结算块（合法 JSON，不能有注释或尾逗号）：`,
+      `<<<GAME_STATE>>>`,
+      `{`,
+      `  "scene": "最新地点名",`,
+      `  "time": "最新时间与氛围",`,
+      `  "summary": "本回合一句话剧情摘要",`,
+      `  "updates": [`,
+      `    {"op": "delta", "section": "对应meters的sectionId", "key": "指标名", "value": -5},`,
+      `    {"op": "set_stat", "section": "对应stats的sectionId", "key": "标签", "value": "新值"},`,
+      `    {"op": "add_tag", "section": "对应tags的sectionId", "item": {"name": "物品名", "meta": "简述", "qty": 1}},`,
+      `    {"op": "remove_tag", "section": "对应tags的sectionId", "name": "物品名"},`,
+      `    {"op": "upsert_entity", "section": "对应entities的sectionId", "entity": {"name": "名", "role": "身份", "status": "态度", "note": "备注"}},`,
+      `    {"op": "add_log", "section": "对应timeline的sectionId", "entry": {"tag": "时间/编号", "title": "标题", "detail": "内容", "status": "待查"}},`,
+      `    {"op": "unlock_tab", "tabId": "隐藏页签id"},`,
+      `    {"op": "add_tab", "tab": {"id": "new_tab", "label": "新页签", "sections": [{"id": "s1", "title": "标题", "type": "notes", "items": [{"title": "标题", "body": "内容"}]}]}}`,
+      `  ],`,
+      `  "choices": ["具体行动选项1（20-45字）", "具体行动选项2", "具体行动选项3"]`,
+      `}`,
+      `<<<END_GAME_STATE>>>`,
+      `注意：updates 只写本回合真实发生的变化；没有变化则传空数组 []。choices 必须给 3 个风格鲜明、有代价或风险差异的行动。`
+    ]
+      .filter(Boolean)
+      .join("\n\n");
+  }
+
+  function parseGameStateBlock(fullText) {
+    const marker = "<<<GAME_STATE>>>";
+    const endMarker = "<<<END_GAME_STATE>>>";
+    const startIdx = fullText.indexOf(marker);
+    if (startIdx === -1) {
+      return { prose: fullText.trim(), payload: null };
+    }
+    const prose = fullText.slice(0, startIdx).trim();
+    let jsonStr = fullText.slice(startIdx + marker.length);
+    const endIdx = jsonStr.indexOf(endMarker);
+    if (endIdx !== -1) jsonStr = jsonStr.slice(0, endIdx);
+    jsonStr = jsonStr.replace(/^```json\s*/i, "").replace(/```\s*$/, "").trim();
+
+    try {
+      return { prose, payload: JSON.parse(jsonStr) };
+    } catch (_) {
+      const match = jsonStr.match(/\{[\s\S]*\}/);
+      if (match) {
+        try {
+          return { prose, payload: JSON.parse(match[0]) };
+        } catch (__) {}
+      }
+      return { prose, payload: null };
+    }
+  }
+
+  function buildMessages(playerAction) {
+    const maxTurns = Math.max(2, Number(apiConfig.contextTurns) || 10);
+    const recent = state.turns.slice(-maxTurns);
+    const msgs = [{ role: "system", content: buildSystemPrompt() }];
+    for (const t of recent) {
+      if (t.playerAction) msgs.push({ role: "user", content: t.playerAction });
+      if (t.prose) msgs.push({ role: "assistant", content: t.prose });
+    }
+    msgs.push({ role: "user", content: playerAction });
+    return msgs;
+  }
+
+  function pickDemoResponse(actionText, choiceIndex) {
+    const demo = STORY.demoScript || {};
+    const stepKey = String(state.demoStep);
+    const branches = demo.branches || {};
+    let picked = null;
+    if (branches[stepKey] && Array.isArray(branches[stepKey])) {
+      picked = branches[stepKey][choiceIndex != null ? choiceIndex : 0] || branches[stepKey][0];
+    } else if (branches[stepKey]) {
+      picked = branches[stepKey];
+    }
+    if (picked) {
+      state.demoStep += 1;
+      return deepClone(picked);
+    }
+    return {
+      scene: state.scene,
+      time: state.time,
+      prose: `你顺着自己的判断采取了行动：「${actionText}」。\n\n四周的空气微微一滞，方才暗流涌动的局势因你这一步显出新的裂口。当前正处于「离线试玩模式」，演示剧本已告一段落。\n\n点击右上角「接口」，填入 DeepSeek 或任意 OpenAI 兼容 API Key，即可让 AI 接管当前全部动态页签、记忆与剧情，无限续写下去。`,
+      summary: `玩家尝试了自定义行动：${actionText.slice(0, 24)}`,
+      updates: [],
+      choices: [
+        "打开右上角「接口」配置 DeepSeek / OpenAI，继续真实游玩",
+        "点击「重来」或「删掉本回合」，体验精确状态回滚",
+        "点击「存档」，将当前进度导出为 JSON 文件"
+      ]
+    };
+  }
+
+  async function streamDemoTurn(demoResp, onChunk, signal) {
+    const text = demoResp.prose || "";
+    let i = 0;
+    while (i < text.length) {
+      if (signal.aborted) break;
+      const step = Math.min(text.length, i + 4);
+      i = step;
+      onChunk(text.slice(0, i), false);
+      await new Promise((r) => setTimeout(r, 16));
+    }
+    return {
+      prose: text,
+      payload: {
+        scene: demoResp.scene || state.scene,
+        time: demoResp.time || state.time,
+        summary: demoResp.summary || "",
+        updates: demoResp.updates || [],
+        choices: demoResp.choices || []
+      }
+    };
+  }
+
+  async function streamLiveTurn(playerAction, onChunk, signal) {
+    const url = apiConfig.baseUrl.replace(/\/+$/, "") + "/chat/completions";
+    const res = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + apiConfig.apiKey
+      },
+      body: JSON.stringify({
+        model: apiConfig.model,
+        temperature: Number(apiConfig.temperature) || 0.85,
+        stream: true,
+        messages: buildMessages(playerAction)
+      }),
+      signal
+    });
+
+    if (!res.ok) {
+      const errBody = await res.text().catch(() => "");
+      throw new Error(`HTTP ${res.status}: ${errBody.slice(0, 180)}`);
+    }
+
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder("utf-8");
+    let buffer = "";
+    let fullText = "";
+
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split("\n");
+      buffer = lines.pop() || "";
+
+      for (const rawLine of lines) {
+        const line = rawLine.trim();
+        if (!line.startsWith("data:")) continue;
+        const data = line.slice(5).trim();
+        if (data === "[DONE]") continue;
+        try {
+          const parsed = JSON.parse(data);
+          const delta = parsed.choices && parsed.choices[0] && parsed.choices[0].delta && parsed.choices[0].delta.content;
+          if (delta) {
+            fullText += delta;
+            const cut = fullText.indexOf("<<<GAME_STATE");
+            if (cut !== -1) {
+              onChunk(fullText.slice(0, cut), true);
+            } else {
+              onChunk(fullText, false);
+            }
+          }
+        } catch (_) {}
+      }
+    }
+
+    return parseGameStateBlock(fullText);
+  }
+
+  async function submitAction(actionText, choiceIndex) {
+    const cleanAction = String(actionText || "").trim();
+    if (!cleanAction || isStreaming) return;
+
+    const snapshot = {
+      scene: state.scene,
+      time: state.time,
+      tabs: deepClone(state.tabs),
+      activeTabId: state.activeTabId,
+      memories: deepClone(state.memories),
+      demoStep: state.demoStep
+    };
+
+    const newTurn = {
+      id: "turn_" + Date.now(),
+      index: state.turns.length + 1,
+      playerAction: cleanAction,
+      prose: "",
+      scene: state.scene,
+      time: state.time,
+      changes: [],
+      changedTabId: "",
+      choices: [],
+      stateBefore: snapshot
+    };
+
+    state.turns.push(newTurn);
+    el.input.value = "";
+    autoResizeTextarea();
+    isStreaming = true;
+    abortController = new AbortController();
+
+    renderStream(true);
+    renderDock();
+
+    const turnEl = el.streamInner.querySelector(`[data-turn-idx="${state.turns.length - 1}"]`);
+    const proseEl = turnEl ? turnEl.querySelector(".wy-prose") : null;
+    let settlingEl = null;
+
+    const updateProseDom = (partial, isSettling) => {
+      if (!proseEl) return;
+      proseEl.innerHTML = formatProseHtml(partial) + (isSettling ? "" : '<span class="wy-cursor"></span>');
+      if (isSettling && !settlingEl && turnEl) {
+        settlingEl = document.createElement("div");
+        settlingEl.className = "wy-settling-note";
+        settlingEl.textContent = "正在结算状态与选项…";
+        turnEl.appendChild(settlingEl);
+      }
+      if (el.stream.scrollHeight - el.stream.scrollTop - el.stream.clientHeight < 140) {
+        el.stream.scrollTop = el.stream.scrollHeight;
+      }
+    };
+
+    try {
+      const useLive = Boolean(apiConfig.apiKey && !apiConfig.offlineMode);
+      let result;
+      if (useLive) {
+        result = await streamLiveTurn(cleanAction, updateProseDom, abortController.signal);
+      } else {
+        const demoResp = pickDemoResponse(cleanAction, choiceIndex);
+        result = await streamDemoTurn(demoResp, updateProseDom, abortController.signal);
+      }
+
+      newTurn.prose = result.prose || "（本回合未返回正文）";
+      if (result.payload) {
+        const { changes, firstChangedTabId } = applyStateUpdates(result.payload);
+        newTurn.scene = state.scene;
+        newTurn.time = state.time;
+        newTurn.changes = changes;
+        newTurn.changedTabId = firstChangedTabId;
+        newTurn.choices = Array.isArray(result.payload.choices) && result.payload.choices.length
+          ? result.payload.choices
+          : ["继续观察四周动静", "与眼前之人深入交谈", "暂且退避，另寻良机"];
+      } else {
+        newTurn.choices = ["继续推进当前局势", "停下来细查周遭细节", "换个方向试探"];
+      }
+    } catch (err) {
+      if (err.name === "AbortError") {
+        newTurn.prose = newTurn.prose || "（已手动停止生成）";
+        newTurn.choices = state.turns[state.turns.length - 2].choices || [];
+        showToast("已停止生成");
+      } else {
+        state.turns.pop();
+        showToast("请求失败：" + err.message);
+      }
+    } finally {
+      isStreaming = false;
+      abortController = null;
+      persistAutosave();
+      renderAll(true);
+    }
+  }
+
+  function rollbackLastTurn() {
+    if (state.turns.length <= 1 || isStreaming) return null;
+    const removed = state.turns.pop();
+    if (removed && removed.stateBefore) {
+      state.scene = removed.stateBefore.scene;
+      state.time = removed.stateBefore.time;
+      state.tabs = deepClone(removed.stateBefore.tabs);
+      state.activeTabId = removed.stateBefore.activeTabId;
+      state.memories = deepClone(removed.stateBefore.memories);
+      state.demoStep = removed.stateBefore.demoStep;
+      state.freshTabId = "";
+    }
+    persistAutosave();
+    return removed;
+  }
+
+  // Save / Load management
+  function getSaveSlots() {
+    try {
+      return JSON.parse(localStorage.getItem(SAVE_SLOTS_KEY) || "{}");
+    } catch (_) {
+      return {};
+    }
+  }
+
+  function setSaveSlots(slots) {
+    try {
+      localStorage.setItem(SAVE_SLOTS_KEY, JSON.stringify(slots));
+    } catch (_) {}
+  }
+
+  function openSaveModal() {
+    renderSaveSlots();
+    el.saveModal.classList.add("is-open");
+  }
+
+  function renderSaveSlots() {
+    const slots = getSaveSlots();
+    const ids = ["slot_1", "slot_2", "slot_3", "slot_4", "slot_5"];
+    el.saveList.innerHTML = ids
+      .map((id, idx) => {
+        const s = slots[id];
+        const meta = s
+          ? `第 ${s.turnCount} 回 · ${s.scene || "未知场景"} · ${s.savedAt}`
+          : "空槽位";
+        return `<div class="wy-slot-card">
+          <div class="wy-slot-info">
+            <div class="wy-slot-name">档案槽 ${idx + 1}</div>
+            <div class="wy-slot-meta">${esc(meta)}</div>
+          </div>
+          <div class="wy-slot-actions">
+            <button class="wy-btn wy-btn--compact" data-slot-save="${id}">${s ? "覆盖" : "存入"}</button>
+            ${s ? `<button class="wy-btn wy-btn--compact wy-btn--primary" data-slot-load="${id}">读取</button>` : ""}
+            ${s ? `<button class="wy-btn wy-btn--compact wy-btn--danger" data-slot-del="${id}">删</button>` : ""}
+          </div>
+        </div>`;
+      })
+      .join("");
+  }
+
+  // Settings Modal
+  let activeSettingsTab = "api";
+
+  function openSettingsModal(tab) {
+    activeSettingsTab = tab || "api";
+    renderSettingsModal();
+    el.settingsModal.classList.add("is-open");
+  }
+
+  function renderSettingsModal() {
+    const tabs = [
+      { id: "api", label: "模型接口" },
+      { id: "story", label: "世界与设定" },
+      { id: "memory", label: "剧情记忆" },
+      { id: "theme", label: "外观皮肤" }
+    ];
+    el.settingsTabs.innerHTML = tabs
+      .map(
+        (t) =>
+          `<button class="wy-tab-btn ${t.id === activeSettingsTab ? "is-active" : ""}" data-settings-tab="${t.id}">${t.label}</button>`
+      )
+      .join("");
+
+    if (activeSettingsTab === "api") {
+      el.settingsBody.innerHTML = `
+        <div class="wy-field">
+          <label>快捷预设</label>
+          <div class="wy-preset-row">
+            ${API_PRESETS.map((p, i) => `<button class="wy-btn wy-btn--compact" data-api-preset="${i}">${esc(p.name)}</button>`).join("")}
+          </div>
+        </div>
+        <div class="wy-field">
+          <label for="cfg-url">Base URL（OpenAI 兼容接口）</label>
+          <input id="cfg-url" class="wy-input" value="${esc(apiConfig.baseUrl)}" placeholder="https://api.deepseek.com/v1" />
+        </div>
+        <div class="wy-field">
+          <label for="cfg-key">API Key（仅存本机浏览器 localStorage，不上传第三方）</label>
+          <input id="cfg-key" class="wy-input" type="password" value="${esc(apiConfig.apiKey)}" placeholder="sk-..." />
+        </div>
+        <div class="wy-row-2">
+          <div class="wy-field">
+            <label for="cfg-model">模型名称</label>
+            <input id="cfg-model" class="wy-input" value="${esc(apiConfig.model)}" placeholder="deepseek-chat" />
+          </div>
+          <div class="wy-field">
+            <label for="cfg-temp">随机度 Temperature（0.2 - 1.3）</label>
+            <input id="cfg-temp" class="wy-input" type="number" step="0.05" min="0.1" max="1.5" value="${esc(apiConfig.temperature)}" />
+          </div>
+        </div>
+        <div class="wy-row-2">
+          <div class="wy-field">
+            <label for="cfg-ctx">上下文保留回合数</label>
+            <input id="cfg-ctx" class="wy-input" type="number" min="2" max="30" value="${esc(apiConfig.contextTurns)}" />
+          </div>
+          <div class="wy-field" style="justify-content:flex-end;">
+            <label class="wy-check" style="height:34px;">
+              <input id="cfg-offline" type="checkbox" ${apiConfig.offlineMode ? "checked" : ""} />
+              <span>离线试玩模式（不消耗 API）</span>
+            </label>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <button id="cfg-save-api" class="wy-btn wy-btn--primary">保存接口配置</button>
+          <button id="cfg-test-api" class="wy-btn">测试连接</button>
+          <span id="cfg-test-msg" style="font-size:12px;color:var(--wy-text-muted);"></span>
+        </div>
+      `;
+    } else if (activeSettingsTab === "story") {
+      el.settingsBody.innerHTML = `
+        <div class="wy-field">
+          <label for="st-world">世界观</label>
+          <textarea id="st-world" rows="3">${esc(state.storySettings.worldview)}</textarea>
+        </div>
+        <div class="wy-field">
+          <label for="st-protag">主角档案</label>
+          <textarea id="st-protag" rows="3">${esc(state.storySettings.protagonist)}</textarea>
+        </div>
+        <div class="wy-field">
+          <label for="st-style">文风要求</label>
+          <textarea id="st-style" rows="2">${esc(state.storySettings.style)}</textarea>
+        </div>
+        <div class="wy-field">
+          <label for="st-rules">额外规则（自定义 System Prompt）</label>
+          <textarea id="st-rules" rows="2">${esc(state.storySettings.customRules)}</textarea>
+        </div>
+        <div><button id="st-save" class="wy-btn wy-btn--primary">保存设定（下回合生效）</button></div>
+      `;
+    } else if (activeSettingsTab === "memory") {
+      el.settingsBody.innerHTML = `
+        <div style="display:flex;gap:6px;">
+          <input id="mem-new" class="wy-input" placeholder="手动补充一条关键剧情记忆…" />
+          <button id="mem-add" class="wy-btn wy-btn--primary">添加</button>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          ${
+            state.memories.length
+              ? state.memories
+                  .map(
+                    (m, i) => `<div class="wy-memory-item">
+                    <span><strong>[第${m.turn}回]</strong> ${esc(m.text)}</span>
+                    <button class="wy-mini-btn" data-mem-del="${i}">删</button>
+                  </div>`
+                  )
+                  .join("")
+              : `<div class="wy-empty">尚无提炼记忆，游玩推进后自动记录。</div>`
+          }
+        </div>
+      `;
+    } else if (activeSettingsTab === "theme") {
+      el.settingsBody.innerHTML = `
+        <div class="wy-theme-grid">
+          ${THEME_META.map(
+            (t) => `<button class="wy-theme-opt ${state.preferences.themeId === t.id ? "is-active" : ""}" data-pick-theme="${t.id}">
+              <span class="wy-theme-opt-name">${esc(t.name)}${t.id === STORY.theme ? "（本故事推荐）" : ""}</span>
+              <span class="wy-theme-opt-desc">${esc(t.desc)}</span>
+            </button>`
+          ).join("")}
+        </div>
+      `;
+    }
+  }
+
+  function autoResizeTextarea() {
+    el.input.style.height = "auto";
+    el.input.style.height = Math.min(120, Math.max(40, el.input.scrollHeight)) + "px";
+  }
+
+  function initSelect() {
+    el.lengthSelect.innerHTML = LENGTH_PRESETS.map(
+      (p) => `<option value="${p.id}">${esc(p.label)}</option>`
+    ).join("");
+  }
+
+  function bindEvents() {
+    el.menuBtn.addEventListener("click", () => {
+      if (window.innerWidth <= 900) {
+        document.body.classList.toggle("drawer-open");
+      } else {
+        document.body.classList.toggle("sidebar-collapsed");
+      }
+    });
+
+    el.sidebarClose.addEventListener("click", () => {
+      document.body.classList.remove("drawer-open", "immersive-peek");
+      if (window.innerWidth > 900 && !document.body.classList.contains("is-immersive")) {
+        document.body.classList.add("sidebar-collapsed");
+      }
+    });
+
+    el.backdrop.addEventListener("click", () => {
+      document.body.classList.remove("drawer-open", "immersive-peek");
+    });
+
+    el.immersiveBtn.addEventListener("click", () => {
+      document.body.classList.add("is-immersive");
+      document.body.classList.remove("drawer-open", "immersive-peek");
+    });
+
+    el.immersiveExit.addEventListener("click", () => {
+      document.body.classList.remove("is-immersive", "immersive-peek");
+    });
+
+    el.immersivePeek.addEventListener("click", () => {
+      document.body.classList.toggle("immersive-peek");
+    });
+
+    el.tabBar.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-tab-id]");
+      if (!btn) return;
+      state.activeTabId = btn.dataset.tabId;
+      if (state.freshTabId === state.activeTabId) state.freshTabId = "";
+      persistAutosave();
+      renderSidebar();
+    });
+
+    el.streamInner.addEventListener("click", (e) => {
+      const settle = e.target.closest("[data-open-tab]");
+      if (!settle) return;
+      const tabId = settle.dataset.openTab;
+      if (tabId) state.activeTabId = tabId;
+      state.freshTabId = "";
+      renderSidebar();
+      if (document.body.classList.contains("is-immersive")) {
+        document.body.classList.add("immersive-peek");
+      } else if (window.innerWidth <= 900) {
+        document.body.classList.add("drawer-open");
+      } else {
+        document.body.classList.remove("sidebar-collapsed");
+      }
+    });
+
+    el.choicesBox.addEventListener("click", (e) => {
+      const card = e.target.closest("[data-choice-idx]");
+      if (!card || isStreaming) return;
+      const idx = Number(card.dataset.choiceIdx);
+      const lastTurn = state.turns[state.turns.length - 1];
+      const text = lastTurn && lastTurn.choices && lastTurn.choices[idx];
+      if (text) submitAction(text, idx);
+    });
+
+    el.input.addEventListener("input", autoResizeTextarea);
+    el.input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        submitAction(el.input.value, null);
+      }
+    });
+
+    el.sendBtn.addEventListener("click", () => {
+      if (isStreaming && abortController) {
+        abortController.abort();
+      } else {
+        submitAction(el.input.value, null);
+      }
+    });
+
+    el.retryBtn.addEventListener("click", () => {
+      const removed = rollbackLastTurn();
+      if (removed && removed.playerAction) {
+        renderAll(true);
+        submitAction(removed.playerAction, null);
+      }
+    });
+
+    el.deleteBtn.addEventListener("click", () => {
+      const removed = rollbackLastTurn();
+      if (removed) {
+        renderAll(true);
+        showToast("已回退本回合与状态");
+      }
+    });
+
+    el.lengthSelect.addEventListener("change", () => {
+      state.preferences.lengthId = el.lengthSelect.value;
+      persistAutosave();
+    });
+
+    el.autoSettle.addEventListener("change", () => {
+      state.preferences.autoSettle = el.autoSettle.checked;
+      persistAutosave();
+    });
+
+    el.toggleChoices.addEventListener("click", () => {
+      state.preferences.choicesHidden = !state.preferences.choicesHidden;
+      persistAutosave();
+      renderDock();
+    });
+
+    el.fontToggle.addEventListener("click", () => {
+      const order = ["default", "serif", "sans"];
+      const next = order[(order.indexOf(state.preferences.proseFont || "default") + 1) % order.length];
+      state.preferences.proseFont = next;
+      el.fontToggle.textContent = next === "serif" ? "宋体" : next === "sans" ? "黑体" : "默认体";
+      persistAutosave();
+      applyTheme(state.preferences.themeId);
+    });
+
+    el.sizeDown.addEventListener("click", () => {
+      state.preferences.proseSizeDelta = Math.max(-2.5, (state.preferences.proseSizeDelta || 0) - 1);
+      persistAutosave();
+      applyTheme(state.preferences.themeId);
+    });
+
+    el.sizeUp.addEventListener("click", () => {
+      state.preferences.proseSizeDelta = Math.min(4, (state.preferences.proseSizeDelta || 0) + 1);
+      persistAutosave();
+      applyTheme(state.preferences.themeId);
+    });
+
+    el.saveBtn.addEventListener("click", openSaveModal);
+    el.settingsBtn.addEventListener("click", () => openSettingsModal("api"));
+    el.modePill.addEventListener("click", () => openSettingsModal("api"));
+
+    document.querySelectorAll("[data-close-modal]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        btn.closest(".wy-modal-mask").classList.remove("is-open");
+      });
+    });
+
+    [el.saveModal, el.settingsModal].forEach((mask) => {
+      mask.addEventListener("click", (e) => {
+        if (e.target === mask) mask.classList.remove("is-open");
+      });
+    });
+
+    // Save modal actions
+    el.saveList.addEventListener("click", (e) => {
+      const saveId = e.target.dataset.slotSave;
+      const loadId = e.target.dataset.slotLoad;
+      const delId = e.target.dataset.slotDel;
+      const slots = getSaveSlots();
+      if (saveId) {
+        slots[saveId] = {
+          savedAt: new Date().toLocaleString(),
+          turnCount: state.turns.length,
+          scene: state.scene,
+          snapshot: deepClone(state)
+        };
+        setSaveSlots(slots);
+        renderSaveSlots();
+        showToast("已保存进度");
+      } else if (loadId && slots[loadId]) {
+        state = deepClone(slots[loadId].snapshot);
+        persistAutosave();
+        renderAll(true);
+        el.saveModal.classList.remove("is-open");
+        showToast("已读取档案");
+      } else if (delId && slots[delId]) {
+        delete slots[delId];
+        setSaveSlots(slots);
+        renderSaveSlots();
+        showToast("已删除槽位");
+      }
+    });
+
+    $("wy-export-save").addEventListener("click", () => {
+      const blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = `${STORY.id || "wenyou"}-save.json`;
+      a.click();
+      URL.revokeObjectURL(a.href);
+    });
+
+    $("wy-import-input").addEventListener("change", (e) => {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const parsed = JSON.parse(String(reader.result));
+          if (!parsed || !Array.isArray(parsed.turns) || !Array.isArray(parsed.tabs)) {
+            throw new Error("存档格式不匹配");
+          }
+          state = parsed;
+          persistAutosave();
+          renderAll(true);
+          el.saveModal.classList.remove("is-open");
+          showToast("已导入存档");
+        } catch (err) {
+          showToast("导入失败：" + err.message);
+        }
+      };
+      reader.readAsText(file);
+      e.target.value = "";
+    });
+
+    $("wy-restart-btn").addEventListener("click", () => {
+      if (!confirm("确定清空当前进度并从头开局？已存入档案槽的记录不受影响。")) return;
+      state = createInitialState();
+      persistAutosave();
+      renderAll(false);
+      el.saveModal.classList.remove("is-open");
+      showToast("已重新开局");
+    });
+
+    // Settings modal delegation
+    el.settingsTabs.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-settings-tab]");
+      if (!btn) return;
+      activeSettingsTab = btn.dataset.settingsTab;
+      renderSettingsModal();
+    });
+
+    el.settingsBody.addEventListener("click", async (e) => {
+      const presetBtn = e.target.closest("[data-api-preset]");
+      if (presetBtn) {
+        const p = API_PRESETS[Number(presetBtn.dataset.apiPreset)];
+        if (p) {
+          $("cfg-url").value = p.baseUrl;
+          $("cfg-model").value = p.model;
+          $("cfg-offline").checked = false;
+        }
+        return;
+      }
+
+      if (e.target.id === "cfg-save-api") {
+        apiConfig = {
+          baseUrl: $("cfg-url").value.trim(),
+          apiKey: $("cfg-key").value.trim(),
+          model: $("cfg-model").value.trim(),
+          temperature: Number($("cfg-temp").value) || 0.85,
+          contextTurns: Number($("cfg-ctx").value) || 10,
+          offlineMode: $("cfg-offline").checked
+        };
+        if (apiConfig.apiKey && $("cfg-offline").checked === false) {
+          apiConfig.offlineMode = false;
+        }
+        saveApiConfig(apiConfig);
+        renderHeader();
+        showToast(apiConfig.apiKey && !apiConfig.offlineMode ? "接口已启用" : "已保存配置");
+        return;
+      }
+
+      if (e.target.id === "cfg-test-api") {
+        const msg = $("cfg-test-msg");
+        const baseUrl = $("cfg-url").value.trim().replace(/\/+$/, "");
+        const key = $("cfg-key").value.trim();
+        const model = $("cfg-model").value.trim();
+        if (!baseUrl || !key || !model) {
+          msg.textContent = "请先填写 URL、Key 和模型名";
+          return;
+        }
+        msg.textContent = "连接中…";
+        const t0 = performance.now();
+        try {
+          const r = await fetch(baseUrl + "/chat/completions", {
+            method: "POST",
+            headers: { "Content-Type": "application/json", Authorization: "Bearer " + key },
+            body: JSON.stringify({ model, max_tokens: 8, messages: [{ role: "user", content: "ping" }] })
+          });
+          if (!r.ok) throw new Error("HTTP " + r.status);
+          msg.textContent = `连接成功（${Math.round(performance.now() - t0)} ms）`;
+        } catch (err) {
+          msg.textContent = "失败：" + err.message;
+        }
+        return;
+      }
+
+      if (e.target.id === "st-save") {
+        state.storySettings = {
+          worldview: $("st-world").value.trim(),
+          protagonist: $("st-protag").value.trim(),
+          style: $("st-style").value.trim(),
+          customRules: $("st-rules").value.trim()
+        };
+        persistAutosave();
+        showToast("设定已更新");
+        return;
+      }
+
+      if (e.target.id === "mem-add") {
+        const val = $("mem-new").value.trim();
+        if (!val) return;
+        state.memories.push({ turn: state.turns.length, text: val });
+        persistAutosave();
+        renderSettingsModal();
+        return;
+      }
+
+      const memDel = e.target.closest("[data-mem-del]");
+      if (memDel) {
+        state.memories.splice(Number(memDel.dataset.memDel), 1);
+        persistAutosave();
+        renderSettingsModal();
+        return;
+      }
+
+      const themePick = e.target.closest("[data-pick-theme]");
+      if (themePick) {
+        state.preferences.themeId = themePick.dataset.pickTheme;
+        persistAutosave();
+        applyTheme(state.preferences.themeId);
+        renderSettingsModal();
+        showToast("已切换主题");
+      }
+    });
+
+    // Keyboard shortcuts: 1/2/3 pick choice, Esc exits immersive or modal
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        if (el.saveModal.classList.contains("is-open")) {
+          el.saveModal.classList.remove("is-open");
+        } else if (el.settingsModal.classList.contains("is-open")) {
+          el.settingsModal.classList.remove("is-open");
+        } else if (document.body.classList.contains("is-immersive")) {
+          document.body.classList.remove("is-immersive", "immersive-peek");
+        }
+        return;
+      }
+      const tag = (document.activeElement && document.activeElement.tagName) || "";
+      if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || isStreaming) return;
+      if (el.saveModal.classList.contains("is-open") || el.settingsModal.classList.contains("is-open")) return;
+      if (e.key === "1" || e.key === "2" || e.key === "3") {
+        const idx = Number(e.key) - 1;
+        const lastTurn = state.turns[state.turns.length - 1];
+        const text = lastTurn && lastTurn.choices && lastTurn.choices[idx];
+        if (text) submitAction(text, idx);
+      }
+    });
+  }
+
+  initSelect();
+  bindEvents();
+  renderAll(false);
+})();
+</script>
+</body>
+</html>

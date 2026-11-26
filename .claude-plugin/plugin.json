@@ -1,0 +1,10 @@
+{
+  "name": "wenyou",
+  "version": "0.1.0",
+  "description": "Immersive single-file HTML interactive fiction (AIRP / text-adventure) builder. Dynamic story-driven tabs, five restrained atmospheric themes, streaming state settlement, rollback snapshots and OpenAI-compatible API support.",
+  "author": { "name": "Ke Haoran", "url": "https://github.com/kehaoran-ai" },
+  "homepage": "https://github.com/kehaoran-ai/wenyou",
+  "repository": "https://github.com/kehaoran-ai/wenyou",
+  "license": "MIT",
+  "keywords": ["html", "airp", "interactive-fiction", "text-adventure", "wenyou", "rpg", "skill"]
+}

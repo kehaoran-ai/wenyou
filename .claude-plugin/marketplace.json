@@ -1,0 +1,16 @@
+{
+  "name": "wenyou",
+  "owner": { "name": "Ke Haoran", "url": "https://github.com/kehaoran-ai" },
+  "metadata": {
+    "description": "Wenyou: immersive single-file HTML interactive fiction platforms with story-adaptive tabs and UI."
+  },
+  "plugins": [
+    {
+      "name": "wenyou",
+      "source": "./",
+      "description": "Build single-file HTML text-adventure / AIRP platforms where tabs, widgets, copy and visual themes adapt to each story.",
+      "version": "0.1.0",
+      "license": "MIT"
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+/* Theme: dossier (旧档案 — 民国 / 克苏鲁 / 悬疑探案 / 调查实录) */
+:root {
+  --wy-bg: #EBE7DE;
+  --wy-surface: #F6F3EC;
+  --wy-surface-2: #E5E0D5;
+  --wy-surface-hover: #DDD7C9;
+  --wy-border: #D2CBB9;
+  --wy-border-strong: #A89F8B;
+  --wy-text: #221E1A;
+  --wy-text-secondary: #4D463C;
+  --wy-text-muted: #756C5E;
+  --wy-ink: #24201B;
+  --wy-ink-text: #F6F3EC;
+  --wy-accent: #8F2D22;
+  --wy-accent-soft: rgba(143, 45, 34, 0.09);
+  --wy-accent-border: rgba(143, 45, 34, 0.30);
+  --wy-danger: #991B1B;
+  --wy-danger-soft: rgba(153, 27, 27, 0.08);
+  --wy-shadow: 0 1px 0 rgba(34, 30, 26, 0.06);
+  --wy-shadow-lg: 0 12px 28px rgba(34, 30, 26, 0.14);
+  --wy-radius-sm: 3px;
+  --wy-radius-md: 4px;
+  --wy-radius-lg: 6px;
+  --wy-font-ui: -apple-system, BlinkMacSystemFont, "PingFang SC", "Noto Sans SC", "Inter", sans-serif;
+  --wy-font-prose: "Songti SC", "Noto Serif SC", "Source Han Serif SC", Georgia, serif;
+  --wy-font-mono: ui-monospace, "SF Mono", "Courier New", "Sarasa Term SC", monospace;
+  --wy-prose-size: 16.5px;
+  --wy-prose-leading: 1.9;
+  --wy-paper-pattern: linear-gradient(to bottom, rgba(34, 30, 26, 0.025) 1px, transparent 1px);
+  --wy-paper-size: 100% 30px;
+}
+
+.wy-header-scene,
+.wy-turn-badge,
+.wy-log-tag {
+  font-family: var(--wy-font-mono);
+}
+
+.wy-choice-card {
+  border-style: solid;
+}

@@ -1,0 +1,31 @@
+/* Theme: editorial (现代出版物 — 现代都市 / 职场 / 悬疑文学 / 日常物语) */
+:root {
+  --wy-bg: #F6F6F7;
+  --wy-surface: #FFFFFF;
+  --wy-surface-2: #F1F2F4;
+  --wy-surface-hover: #EAECEF;
+  --wy-border: #E4E4E7;
+  --wy-border-strong: #B4B4BC;
+  --wy-text: #18181B;
+  --wy-text-secondary: #52525B;
+  --wy-text-muted: #71717A;
+  --wy-ink: #18181B;
+  --wy-ink-text: #FFFFFF;
+  --wy-accent: #1D4ED8;
+  --wy-accent-soft: rgba(29, 78, 216, 0.08);
+  --wy-accent-border: rgba(29, 78, 216, 0.28);
+  --wy-danger: #DC2626;
+  --wy-danger-soft: rgba(220, 38, 38, 0.08);
+  --wy-shadow: 0 1px 2px rgba(24, 24, 27, 0.04);
+  --wy-shadow-lg: 0 12px 32px rgba(24, 24, 27, 0.10);
+  --wy-radius-sm: 6px;
+  --wy-radius-md: 8px;
+  --wy-radius-lg: 10px;
+  --wy-font-ui: -apple-system, BlinkMacSystemFont, "PingFang SC", "Noto Sans SC", "Inter", sans-serif;
+  --wy-font-prose: -apple-system, BlinkMacSystemFont, "PingFang SC", "Noto Sans SC", "Inter", sans-serif;
+  --wy-font-mono: ui-monospace, "SF Mono", "Sarasa Term SC", monospace;
+  --wy-prose-size: 16.5px;
+  --wy-prose-leading: 1.88;
+  --wy-paper-pattern: none;
+  --wy-paper-size: auto;
+}

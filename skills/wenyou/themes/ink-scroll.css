@@ -1,0 +1,41 @@
+/* Theme: ink-scroll (水墨笺纸 — 武侠 / 古风 / 志怪 / 江湖) */
+:root {
+  --wy-bg: #F3EFE7;
+  --wy-surface: #FAF8F3;
+  --wy-surface-2: #EFEAE0;
+  --wy-surface-hover: #EAE3D5;
+  --wy-border: #DFD8CA;
+  --wy-border-strong: #BFB5A2;
+  --wy-text: #1F1C18;
+  --wy-text-secondary: #534C42;
+  --wy-text-muted: #7C7468;
+  --wy-ink: #1F1C18;
+  --wy-ink-text: #FAF8F3;
+  --wy-accent: #9B2C2C;
+  --wy-accent-soft: rgba(155, 44, 44, 0.08);
+  --wy-accent-border: rgba(155, 44, 44, 0.28);
+  --wy-danger: #B91C1C;
+  --wy-danger-soft: rgba(185, 28, 28, 0.08);
+  --wy-shadow: 0 1px 2px rgba(31, 28, 24, 0.04);
+  --wy-shadow-lg: 0 12px 32px rgba(31, 28, 24, 0.12);
+  --wy-radius-sm: 4px;
+  --wy-radius-md: 6px;
+  --wy-radius-lg: 8px;
+  --wy-font-ui: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Inter", sans-serif;
+  --wy-font-prose: "Songti SC", "STSong", "Noto Serif SC", "Source Han Serif SC", Georgia, serif;
+  --wy-font-mono: ui-monospace, "SF Mono", "Sarasa Term SC", monospace;
+  --wy-prose-size: 17px;
+  --wy-prose-leading: 1.95;
+  --wy-paper-pattern: radial-gradient(rgba(31, 28, 24, 0.03) 1px, transparent 0);
+  --wy-paper-size: 24px 24px;
+}
+
+.wy-turn-badge {
+  letter-spacing: 0.12em;
+}
+
+.wy-choice-index {
+  border-color: var(--wy-accent-border);
+  color: var(--wy-accent);
+  background: var(--wy-accent-soft);
+}

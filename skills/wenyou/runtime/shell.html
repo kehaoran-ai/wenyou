@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="__LANG__">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>__TITLE__</title>
+  <style id="wy-theme-style">__THEME_CSS__</style>
+  <style id="wy-custom-style">__CUSTOM_CSS__</style>
+  <style>__ENGINE_CSS__</style>
+</head>
+<body>
+  <header class="wy-header">
+    <div class="wy-header-left">
+      <button id="wy-menu-btn" class="wy-btn wy-btn--icon" aria-label="展开或收起卷宗">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+      <div class="wy-title-group">
+        <h1 id="wy-story-title" class="wy-story-title">__TITLE__</h1>
+        <div id="wy-header-scene" class="wy-header-scene"></div>
+      </div>
+    </div>
+    <div class="wy-header-actions">
+      <button id="wy-immersive-btn" class="wy-btn" title="全屏沉浸阅读">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+        <span class="wy-btn-label-sm-hide">__FULLSCREEN_LABEL__</span>
+      </button>
+      <button id="wy-save-btn" class="wy-btn" title="存档管理">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>
+        <span class="wy-btn-label-sm-hide">__SAVE_LABEL__</span>
+      </button>
+      <button id="wy-settings-btn" class="wy-btn" title="接口与设定">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.26.6.85 1 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <span class="wy-btn-label-sm-hide">接口</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="wy-immersive-bar">
+    <button id="wy-immersive-peek" class="wy-btn wy-btn--compact">卷宗</button>
+    <button id="wy-immersive-exit" class="wy-btn wy-btn--compact">退出沉浸</button>
+  </div>
+
+  <div class="wy-workspace">
+    <aside class="wy-sidebar" aria-label="故事动态面板">
+      <div class="wy-sidebar-head">
+        <span id="wy-sidebar-label" class="wy-sidebar-label">故事卷宗</span>
+        <button id="wy-sidebar-close" class="wy-btn wy-btn--icon wy-btn--ghost" aria-label="收起侧栏">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+      </div>
+      <nav id="wy-tab-bar" class="wy-tab-bar"></nav>
+      <div id="wy-tab-body" class="wy-tab-body"></div>
+      <div class="wy-sidebar-foot">
+        <div class="wy-foot-controls">
+          <button id="wy-font-toggle" class="wy-mini-btn" title="切换正文字体">默认体</button>
+          <button id="wy-size-down" class="wy-mini-btn" title="缩小字号">A-</button>
+          <button id="wy-size-up" class="wy-mini-btn" title="放大字号">A+</button>
+        </div>
+        <button id="wy-mode-pill" class="wy-mode-pill">离线试玩</button>
+      </div>
+    </aside>
+
+    <div id="wy-backdrop" class="wy-backdrop"></div>
+
+    <main class="wy-main">
+      <div id="wy-stream" class="wy-stream">
+        <div id="wy-stream-inner" class="wy-stream-inner"></div>
+      </div>
+
+      <section class="wy-dock" aria-label="行动与互动">
+        <div class="wy-dock-inner">
+          <div class="wy-toolbar">
+            <div class="wy-toolbar-left">
+              <span id="wy-dock-heading" class="wy-dock-heading">互动</span>
+              <button id="wy-retry-btn" class="wy-btn wy-btn--compact">__RETRY_LABEL__</button>
+              <button id="wy-delete-btn" class="wy-btn wy-btn--compact wy-btn--danger">__DELETE_LABEL__</button>
+              <select id="wy-length-select" class="wy-select" aria-label="生成字数"></select>
+            </div>
+            <div class="wy-toolbar-right">
+              <label class="wy-check">
+                <input id="wy-auto-settle" type="checkbox" checked />
+                <span id="wy-auto-settle-text">自动结算</span>
+              </label>
+              <button id="wy-toggle-choices" class="wy-btn wy-btn--compact wy-btn--ghost">收起选项</button>
+            </div>
+          </div>
+
+          <div id="wy-choices" class="wy-choices"></div>
+
+          <div class="wy-composer">
+            <textarea id="wy-input" class="wy-textarea" rows="1" placeholder="写你想做的事… (Enter 发送)"></textarea>
+            <button id="wy-send-btn" class="wy-btn wy-btn--primary wy-send-btn">发送</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="wy-save-modal" class="wy-modal-mask" role="dialog" aria-modal="true" aria-label="存档管理">
+    <div class="wy-modal">
+      <div class="wy-modal-head">
+        <h2 class="wy-modal-title">存档管理</h2>
+        <button class="wy-btn wy-btn--icon wy-btn--ghost" data-close-modal aria-label="关闭">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div id="wy-save-list" class="wy-modal-body"></div>
+      <div class="wy-modal-foot">
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button id="wy-export-save" class="wy-btn wy-btn--compact">导出 JSON</button>
+          <label class="wy-btn wy-btn--compact" style="margin:0;">
+            导入 JSON
+            <input id="wy-import-input" type="file" accept=".json,application/json" style="display:none;" />
+          </label>
+        </div>
+        <button id="wy-restart-btn" class="wy-btn wy-btn--compact wy-btn--danger">重新开局</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="wy-settings-modal" class="wy-modal-mask" role="dialog" aria-modal="true" aria-label="接口与设定">
+    <div class="wy-modal">
+      <div class="wy-modal-head">
+        <h2 class="wy-modal-title">接口与故事设定</h2>
+        <button class="wy-btn wy-btn--icon wy-btn--ghost" data-close-modal aria-label="关闭">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div id="wy-settings-tabs" class="wy-modal-tabs"></div>
+      <div id="wy-settings-body" class="wy-modal-body"></div>
+    </div>
+  </div>
+
+  <div id="wy-toast" class="wy-toast" role="status" aria-live="polite"></div>
+
+  <script>
+    window.__WENYOU_THEMES__ = __THEMES_JSON__;
+    window.__WENYOU_STORY__ = __STORY_JSON__;
+  </script>
+  <script>__ENGINE_JS__</script>
+</body>
+</html>
